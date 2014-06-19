@@ -1,6 +1,45 @@
 require 'rails_helper'
 
 RSpec.describe User, :type => :model do
+  let(:user) { create(:user) }
+
+  it 'should not generate a password digest from a nil password' do
+    expect(build(:user, password: nil).password_digest).to be_nil
+  end
+
+  it '#reset_session_token! should reset the session token' do
+    starting_token = user.session_token
+    user.reset_session_token!
+    expect(user.session_token).not_to eq(starting_token)
+  end
+
+  context '#is_password?' do
+    it 'should return true if the password matches' do
+      expect(user.is_password?('green1')).to be true
+    end
+
+    it 'should return false if the password does not match' do
+      expect(user.is_password?('green2')).to be false
+    end
+  end
+
+  context '::find_by_credentials' do
+    before(:each) do
+      user
+    end
+
+    it 'should return the user if email and password match' do
+      expect(User.find_by_credentials('example@example.com', 'green1')).to eq(user)
+    end
+
+    it 'should return nil if there is no such user' do
+      expect(User.find_by_credentials('not_a_user', '')).to be nil
+    end
+
+    it 'should return nil if the password does not match' do
+      expect(User.find_by_credentials('example@example.com', '')).to be nil
+    end
+  end
 
   context 'validations' do
     it 'validates when given an email and password' do
