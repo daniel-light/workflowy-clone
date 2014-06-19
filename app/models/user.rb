@@ -16,6 +16,7 @@ class User < ActiveRecord::Base
   attr_reader :password
 
   def password=(secret)
+    return unless secret
     self.password_digest = BCrypt::Password.create(secret)
     @password = secret
   end
