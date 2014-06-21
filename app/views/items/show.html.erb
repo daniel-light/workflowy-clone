@@ -1,0 +1,6 @@
+<nav><%= link_to 'Home', items_url %> ></nav>
+<h1><%= @item.title %></h1>
+<p><%= @item.notes %></p>
+<ul>
+  <%= render @items_hash[@item.id] %>
+</ul>

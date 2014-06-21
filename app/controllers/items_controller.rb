@@ -6,8 +6,8 @@ class ItemsController < ApplicationController
 
   def show
     @items_hash = current_user.items_hash(params[:id])
-    @head_item = @items_hash[:head]
-    raise ActionController::RoutingError.new('Not Found') unless @head_item
+    @item = @items_hash[:head]
+    raise ActionController::RoutingError.new('Not Found') unless @item
   end
 
   def new
