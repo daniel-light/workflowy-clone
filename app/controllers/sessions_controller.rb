@@ -9,7 +9,7 @@ class SessionsController < ApplicationController
 
     if user
       sign_in!(user)
-      render json: user
+      redirect_to root_url
     else
       @user = User.new(user_params)
       flash.now.alert = 'Invalid username or password'
