@@ -32,4 +32,16 @@ class User < ActiveRecord::Base
     save!
     session_token
   end
+
+  def items_hash(head_id = nil)
+    items_hash = Hash.new { |hash, key| hash[key] = [] }
+    items_hash[:head] = nil
+
+    items.order(:parent_id).order(:rank).each do |item|
+      items_hash[item.parent_id] << item
+      items_hash[:head] = item if item.id == head_id
+    end
+
+    items_hash
+  end
 end
