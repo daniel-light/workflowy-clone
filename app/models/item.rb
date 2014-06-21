@@ -5,4 +5,12 @@ class Item < ActiveRecord::Base
   belongs_to :user
   belongs_to :parent, class_name: 'Item'
   has_many :children, class_name: 'Item', foreign_key: :parent_id
+
+  def shortened_notes
+    if notes
+      notes.split('\n').first
+    else
+      ''
+    end
+  end
 end

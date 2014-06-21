@@ -39,7 +39,7 @@ class User < ActiveRecord::Base
 
     items.order(:parent_id).order(:rank).each do |item|
       items_hash[item.parent_id] << item
-      items_hash[:head] = item if item.id == head_id
+      items_hash[:head] = item if item.id == head_id.to_i
     end
 
     items_hash
