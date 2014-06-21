@@ -25,6 +25,14 @@ RSpec.describe Item, :type => :model do
       second_child = parent.children.build(title: 'second', user_id: 1, rank: 1)
       expect(second_child).not_to be_valid
     end
+
+    it 'can have the same rank as another item with a different parent' do
+      parent = create(:item)
+      first_child = parent.children.create(title: 'first', user_id: 1, rank: 1)
+      second_parent = create(:item)
+      second_child = second_parent.children.create(title: 'first', user_id: 1, rank: 1)
+      expect(second_child).to be_valid
+    end
   end
 
   context 'associations' do

@@ -3,7 +3,7 @@
 FactoryGirl.define do
   factory :item do
     user_id 1
-    rank 1
+    sequence(:rank) { |n| n }
     title "title"
   end
 end
