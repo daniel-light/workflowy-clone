@@ -2,10 +2,8 @@
 
 FactoryGirl.define do
   factory :item do
-    user nil
-    parent_id 1
+    user_id 1
     rank 1
-    title "MyText"
-    notes "MyText"
+    title "title"
   end
 end
