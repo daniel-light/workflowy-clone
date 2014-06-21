@@ -11,10 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140618222800) do
+ActiveRecord::Schema.define(version: 20140621025457) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "items", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "parent_id"
+    t.integer  "rank"
+    t.text     "title"
+    t.text     "notes"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "items", ["user_id", "parent_id", "rank"], name: "index_items_on_user_id_and_parent_id_and_rank", unique: true, using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email",           null: false

@@ -10,6 +10,6 @@ class CreateItems < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index :items, [:user, :parent_id, :rank], unique: true
+    add_index :items, [:user_id, :parent_id, :rank], unique: true
   end
 end
