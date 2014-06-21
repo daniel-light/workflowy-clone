@@ -66,4 +66,8 @@ RSpec.describe User, :type => :model do
       expect(user.session_token).not_to be_nil
     end
   end
+
+  context 'associations' do
+    it { should have_many(:items) }
+  end
 end

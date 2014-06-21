@@ -3,7 +3,6 @@ require 'rails_helper'
 RSpec.describe Item, :type => :model do
 
   context 'validations' do
-
     it 'validates when given a user_id, title and rank' do
       expect(create(:item)).to be_valid
     end
@@ -26,5 +25,11 @@ RSpec.describe Item, :type => :model do
       second_child = parent.children.build(title: 'second', user_id: 1, rank: 1)
       expect(second_child).not_to be_valid
     end
+  end
+
+  context 'associations' do
+    it { should belong_to(:user) }
+    it { should belong_to(:parent) }
+    it { should have_many(:children) }
   end
 end
