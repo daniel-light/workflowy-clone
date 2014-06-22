@@ -12,7 +12,7 @@ class Item < ActiveRecord::Base
 
   def shortened_notes
     if notes
-      notes.split('\n').first
+      notes.split(/\r?\n/).first
     else
       ''
     end
