@@ -2,6 +2,7 @@ class ItemsController < ApplicationController
 
   def index
     @items_hash = current_user.items_hash
+    @new_item = current_user.items.new
   end
 
   def show
@@ -23,6 +24,15 @@ class ItemsController < ApplicationController
       else
         flash.now[:alert] = @new_item.errors.full_messages
         render :show
+      end
+
+    else
+      @new_item = current_user.items.new(item_params)
+      @new_item.rank ||= max_rank(@items_hash[nil]) + 100
+      if @new_item.save
+        redirect_to items_url
+      else
+        render :index
       end
     end
   end

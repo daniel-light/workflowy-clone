@@ -1,4 +1,4 @@
-<form action="<%= item_url(@item) %>" method="post">
+<form action="<%= @item ? item_url(@item) : items_url %>" method="post">
   <input type="hidden"
     name="authenticity_token" value="<%= form_authenticity_token %>">
 
