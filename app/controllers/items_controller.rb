@@ -7,21 +7,23 @@ class ItemsController < ApplicationController
   def show
     @items_hash = current_user.items_hash(params[:id])
     @item = @items_hash[:head]
+    @new_item = @item.children.new(rank: max_rank(@items_hash[@item.id]) + 100)
     raise ActionController::RoutingError.new('Not Found') unless @item
   end
 
-  def new
-    @item = current_user.items.new
-  end
-
   def create
-    @item = current_user.items.new(item_params)
+    @items_hash = current_user.items_hash(params[:id])
 
-    if @item.save
-      redirect_to item_url(@item)
-    else
-      flash.now[:alert] = @item.errors.full_messages
-      render :new
+    if @item = @items_hash[:head]
+      @new_item = @item.children.new(item_params)
+      @new_item.user_id = current_user.id
+      @new_item.rank ||= max_rank(@items_hash[@item.id]) + 100
+      if @new_item.save
+        redirect_to item_url(@new_item.parent_id)
+      else
+        flash.now[:alert] = @new_item.errors.full_messages
+        render :show
+      end
     end
   end
 
@@ -48,6 +50,11 @@ class ItemsController < ApplicationController
   private
 
   def item_params
-    params.require(:item).permit(:title, :notes, :parent_id, :rank)
+    params.require(:item).permit(:title, :notes, :rank)
+  end
+
+  def max_rank(parent)
+    children = parent.respond_to?(:children) ? parent.children : parent.to_a
+    children.max_by(&:rank).try(:rank) || 0
   end
 end

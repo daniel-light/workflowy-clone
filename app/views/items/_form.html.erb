@@ -1,0 +1,13 @@
+<form action="<%= item_url(@item) %>" method="post">
+  <input type="hidden"
+    name="authenticity_token" value="<%= form_authenticity_token %>">
+
+  <label for="item_title">Title</label>
+  <input id="item_title" name="item[title]"
+    type="text" value="<% item.title %>">
+
+  <label for="item_notes">Notes</label>
+  <textarea id="item_notes" name="item[notes]"><%= item.notes %></textarea>
+
+  <button>Create Item</button>
+</form>
