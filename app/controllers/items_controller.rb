@@ -20,7 +20,7 @@ class ItemsController < ApplicationController
     if @item.save
       redirect_to item_url(@item)
     else
-      flash.alert.now = @item.errors.full_messages
+      flash.now[:alert] = @item.errors.full_messages
       render :new
     end
   end
@@ -35,7 +35,7 @@ class ItemsController < ApplicationController
     if @item.update(item_params)
       redirect_to item_url(@item)
     else
-      flash.alert.now = @item.errors.full_messages
+      flash.now[:alert] = @item.errors.full_messages
       render :edit
     end
   end
