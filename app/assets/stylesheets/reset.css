@@ -1,0 +1,40 @@
+body, h1, nav, ul, li, header, main, section, article, aside, p, a {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+}
+
+body {
+  font-family: sans-serif;
+}
+
+a {
+  color: black;
+  text-decoration: none;
+}
+
+a:visited {
+  color: black;
+}
+
+ul {
+  list-style: none;
+}
+
+button,
+input[type="submit"] {
+ display: inline;
+ -webkit-appearance: none;
+ box-sizing: content-box;
+ margin: 0;
+ padding: 0;
+ border: 0;
+ outline: 0;
+ width: auto;
+ font: inherit;
+ vertical-align: baseline;
+ background: transparent;
+ color: inherit;
+ cursor: pointer;
+}
