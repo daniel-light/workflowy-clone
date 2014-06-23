@@ -8,3 +8,6 @@
   </ul>
   <%= render 'form', item: @new_item %>
 </content>
+<aside>
+  <%= button_to 'Delete', item_url(@item), method: :delete %>
+</aside>
