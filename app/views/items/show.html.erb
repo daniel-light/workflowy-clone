@@ -2,12 +2,13 @@
 <header>
   <%= render 'form', item: @item %>
 </header>
-<content>
+<article>
   <ul>
     <%= render @items_hash[@item.id] %>
   </ul>
+  <h2>Add Item</h2>
   <%= render 'form', item: @new_item %>
-</content>
+</article>
 <aside>
   <%= button_to 'Delete', item_url(@item), method: :delete %>
 </aside>

@@ -1,8 +1,9 @@
 <li>
   <%= link_to item.title, item_url(item) %>
   <%= item.shortened_notes %>
-
-  <ul>
-    <%= render @items_hash[item.id] %>
-  </ul>
+  <section class="indented">
+    <ul>
+      <%= render @items_hash[item.id] %>
+    </ul>
+  </section>
 </li>
