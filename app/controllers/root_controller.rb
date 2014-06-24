@@ -1,6 +1,10 @@
 class RootController < ApplicationController
 
   def index
-    @user = User.new unless signed_in?
+    if signed_in?
+      redirect_to items_url
+    else
+      @user = User.new
+    end
   end
 end
