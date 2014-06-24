@@ -1,10 +1,27 @@
 <li class="item">
+  <form action="<%= collapse_item_url(item) %>" method="post">
+
+    <input type="hidden"
+      name="authenticity_token"
+      value="<%= form_authenticity_token %>">
+    <input type="hidden" name="_method" value="patch">
+    <input type="hidden" name="return_id" value="<%= @item.try(:id) %>">
+
+    <button>
+      <% unless @items_hash[item.id].empty? %>
+        <span><%= item.collapsed ? '+' : '-' %></span>
+      <% end %>
+    </button>
+  </form>
+  </a>
   <a class="bullet" href="<%= item_url(item) %>"></a>
   <%= item.title %>
   <%= item.shortened_notes %>
-  <section class="indented">
-    <ul>
-      <%= render @items_hash[item.id] %>
-    </ul>
-  </section>
+  <% unless item.collapsed %>
+    <section class="indented">
+      <ul class="list">
+        <%= render @items_hash[item.id] %>
+      </ul>
+    </section>
+  <% end %>
 </li>

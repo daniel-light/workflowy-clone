@@ -37,6 +37,14 @@ class ItemsController < ApplicationController
     end
   end
 
+  def collapse
+    item = Item.find(params[:id])
+    view = item.views.where(user_id: current_user.id).first
+    view.toggle_collapsed!
+
+    redirect_to params[:return_id] ? items_url : item_url(params[:return_id])
+  end
+
   def update
     @item = Item.find(params[:id])
 

@@ -3,9 +3,26 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 .indented {
-  padding-left: 10px;
+  padding-left: 12px;
   border-left: 1px solid #ddd;
-  margin-left: 10px;
+  margin-left: 12px;
+}
+
+.item {
+  margin: 10px 0;
+  padding-left: 11px;
+
+  form {
+    display: inline;
+
+    span {
+      line-height: 1;
+      width: 11px;
+      height: 11px;
+      font-size: 11px;
+    }
+
+  }
 }
 
 .bullet {

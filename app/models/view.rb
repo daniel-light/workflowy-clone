@@ -12,4 +12,10 @@ class View < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :item
+
+  def toggle_collapsed!
+    self.collapsed = collapsed ? false : true
+    save!
+    collapsed
+  end
 end
