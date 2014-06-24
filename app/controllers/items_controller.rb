@@ -1,4 +1,6 @@
 class ItemsController < ApplicationController
+  before_action :require_signed_in
+  before_action :require_authorized, except: [:index, :create]
 
   def index
     @items_hash = current_user.items_hash
@@ -71,4 +73,10 @@ class ItemsController < ApplicationController
     children = parent.respond_to?(:children) ? parent.children : parent.to_a
     children.max_by(&:rank).try(:rank) || 0
   end
+
+  def require_authorized
+    @item = Item.find(params[:id])
+    redirect_to root_url unless @item.user_id == current_user.id
+  end
+
 end
