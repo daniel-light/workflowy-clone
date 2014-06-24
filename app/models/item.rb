@@ -12,6 +12,10 @@ class Item < ActiveRecord::Base
            dependent: :destroy,
            inverse_of: :parent
 
+  after_create do
+    views.create!(user_id: user_id)
+  end
+
   def shortened_notes
     if notes
       notes.split(/\r?\n/).first

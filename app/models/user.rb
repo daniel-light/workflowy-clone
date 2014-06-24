@@ -10,6 +10,10 @@ class User < ActiveRecord::Base
     self.session_token ||= SecureRandom.urlsafe_base64(32)
   end
 
+  after_create do
+    views.create!
+  end
+
   def self.find_by_credentials(email, password)
     user = find_by(email: email)
 

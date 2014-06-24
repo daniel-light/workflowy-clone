@@ -39,5 +39,6 @@ RSpec.describe Item, :type => :model do
     it { should belong_to(:user) }
     it { should belong_to(:parent) }
     it { should have_many(:children) }
+    it { should have_many(:views) }
   end
 end
