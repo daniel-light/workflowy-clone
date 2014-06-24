@@ -3,6 +3,7 @@ class Item < ActiveRecord::Base
   validates :rank, uniqueness: {scope: :parent_id}
 
   belongs_to :user
+  has_many :views
 
   belongs_to :parent, class_name: 'Item', inverse_of: :children
 

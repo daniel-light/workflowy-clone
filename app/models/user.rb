@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   validates :password, length: {minimum: 6, allow_nil: true}
 
   has_many :items
+  has_many :views
 
   before_validation do
     self.session_token ||= SecureRandom.urlsafe_base64(32)
