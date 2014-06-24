@@ -1,6 +1,6 @@
 class Item < ActiveRecord::Base
   validates :user_id, :title, :rank, presence: true
-  validates :rank, uniqueness: {scope: :parent_id}
+  validates :rank, uniqueness: {scope: [:parent_id, :user_id]}
 
   belongs_to :user
   has_many :views

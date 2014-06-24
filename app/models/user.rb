@@ -45,7 +45,7 @@ class User < ActiveRecord::Base
 
     items
       .select('items.*, views.collapsed AS collapsed, views.starred AS starred')
-      .joins(:views).where('views.user_id' => 1)
+      .joins(:views).where('views.user_id' => id)
       .order(:parent_id).order(:rank)
       .each do |item|
         items_hash[item.parent_id] << item
