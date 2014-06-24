@@ -43,11 +43,15 @@ class User < ActiveRecord::Base
     items_hash[:head] = nil
     items_hash[:reverse] = {}
 
-    items.select('items.*, views.collapsed as collapsed, views.starred as starred').joins(:views).where('views.user_id' => 1).order(:parent_id).order(:rank).each do |item|
-      items_hash[item.parent_id] << item
-      items_hash[:reverse][item.id] = item.parent_id
-      items_hash[:head] = item if item.id == head_id.to_i
-    end
+    items
+      .select('items.*, views.collapsed AS collapsed, views.starred AS starred')
+      .joins(:views).where('views.user_id' => 1)
+      .order(:parent_id).order(:rank)
+      .each do |item|
+        items_hash[item.parent_id] << item
+        items_hash[:reverse][item.id] = item.parent_id
+        items_hash[:head] = item if item.id == head_id.to_i
+      end
 
     items_hash
   end
