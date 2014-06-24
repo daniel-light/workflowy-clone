@@ -2,9 +2,6 @@
 
 FactoryGirl.define do
   factory :view do
-    user nil
-    item nil
-    collapsed false
-    starred false
+    user_id 1
   end
 end
