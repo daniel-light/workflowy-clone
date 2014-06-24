@@ -42,7 +42,7 @@ class User < ActiveRecord::Base
     items_hash = Hash.new { |hash, key| hash[key] = [] }
     items_hash[:head] = nil
 
-    items.order(:parent_id).order(:rank).each do |item|
+    items.select('items.*, views.collapsed as collapsed, views.starred as starred').joins(:views).where('views.user_id' => 1).order(:parent_id).order(:rank).each do |item|
       items_hash[item.parent_id] << item
       items_hash[:head] = item if item.id == head_id.to_i
     end
