@@ -1,4 +1,7 @@
-<nav><%= link_to 'Home', items_url %> ></nav>
+<nav>
+  <a href="/items">Home ></a>
+  <%= breadcrumbs_from_hash(@items_hash, @item).html_safe %>
+</nav>
 <header>
   <%= render 'form', item: @item %>
 </header>
