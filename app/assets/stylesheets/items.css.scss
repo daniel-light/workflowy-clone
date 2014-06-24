@@ -7,3 +7,14 @@
   border-left: 1px solid #ddd;
   margin-left: 10px;
 }
+
+.bullet {
+  display: block;
+  //position: absolute;
+  margin: 1px 3px;
+  width: 0;
+  height: 0;
+  border: 7px solid #666;
+  border-radius: 9px;
+  float: left;
+}

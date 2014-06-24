@@ -1,5 +1,6 @@
-<li>
-  <%= link_to item.title, item_url(item) %>
+<li class="item">
+  <a class="bullet" href="<%= item_url(item) %>"></a>
+  <%= item.title %>
   <%= item.shortened_notes %>
   <section class="indented">
     <ul>
