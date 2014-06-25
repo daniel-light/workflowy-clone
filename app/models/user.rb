@@ -41,13 +41,16 @@ class User < ActiveRecord::Base
   end
 
   def items_hash(head_id = nil)
+    return @items_hash if @items_hash
+
     items_hash = Hash.new { |hash, key| hash[key] = [] }
     items_hash[:head] = nil
     items_hash[:reverse] = {}
 
-    items
+    Item
       .select('items.*, views.collapsed AS collapsed, views.starred AS starred')
       .joins(:views).where('views.user_id' => id)
+      .includes(:shares)
       .order(:parent_id).order(:rank)
       .each do |item|
         items_hash[item.parent_id] << item
@@ -55,6 +58,6 @@ class User < ActiveRecord::Base
         items_hash[:head] = item if item.id == head_id.to_i
       end
 
-    items_hash
+    @items_hash = items_hash
   end
 end

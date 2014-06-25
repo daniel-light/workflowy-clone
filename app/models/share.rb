@@ -9,6 +9,23 @@ class Share < ActiveRecord::Base
     true
   end
 
+  after_create :create_views
+
   belongs_to :user
   belongs_to :item
+
+  private
+
+  def create_views
+    items_hash = item.user.items_hash
+    queue = [item]
+
+    until queue.empty?
+      item = queue.shift
+      item.views.create!(user_id: user_id)
+      queue.concat(items_hash[item.id])
+    end
+  end
+
+
 end

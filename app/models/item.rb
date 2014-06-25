@@ -18,15 +18,25 @@ class Item < ActiveRecord::Base
     self.user_id ||= parent.try(:user_id)
   end
 
-  after_create do
-    views.create!(user_id: user_id)
-  end
+  after_create :create_views_and_shares
 
   def shortened_notes
     if notes
       notes.split(/\r?\n/).first
     else
       ''
+    end
+  end
+
+  private
+
+  def create_views_and_shares
+    views.create!(user_id: user_id)
+
+    if parent
+      parent.shares.each do |share|
+        views.create!(user_id: share.user_id)
+      end
     end
   end
 end
