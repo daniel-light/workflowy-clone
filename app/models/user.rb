@@ -58,6 +58,6 @@ class User < ActiveRecord::Base
         items_hash[:head] = item if item.id == head_id.to_i
       end
 
-    @items_hash = items_hash
+    @items_hash = items_hash #TODO caching can do weird things with [:head]
   end
 end
