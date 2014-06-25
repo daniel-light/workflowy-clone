@@ -2,9 +2,9 @@
 
 FactoryGirl.define do
   factory :share do
-    user nil
-    item nil
-    url "MyString"
-    can_edit false
+    user_id 1
+    item_id 1
+    url nil
+    can_edit nil
   end
 end
