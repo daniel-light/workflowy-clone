@@ -33,6 +33,15 @@ RSpec.describe Item, :type => :model do
       second_child = second_parent.children.create(title: 'first', user_id: 1, rank: 1)
       expect(second_child).to be_valid
     end
+
+    it do
+      create(:item, url: 'a' * 43)
+      should validate_uniqueness_of(:url).allow_nil
+    end
+
+    it 'should not allow url strings that are the incorrect length' do
+      expect(build(:item, url: 'abc')).not_to be_valid
+    end
   end
 
   context 'associations' do

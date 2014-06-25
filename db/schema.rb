@@ -24,21 +24,21 @@ ActiveRecord::Schema.define(version: 20140625132201) do
     t.text     "notes"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "url"
   end
 
+  add_index "items", ["url"], name: "index_items_on_url", unique: true, using: :btree
   add_index "items", ["user_id", "parent_id", "rank"], name: "index_items_on_user_id_and_parent_id_and_rank", unique: true, using: :btree
 
   create_table "shares", force: true do |t|
     t.integer  "user_id"
     t.integer  "item_id",    null: false
-    t.string   "url",        null: false
     t.boolean  "can_edit",   null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "shares", ["item_id"], name: "index_shares_on_item_id", using: :btree
-  add_index "shares", ["url"], name: "index_shares_on_url", unique: true, using: :btree
   add_index "shares", ["user_id"], name: "index_shares_on_user_id", using: :btree
 
   create_table "users", force: true do |t|
