@@ -26,6 +26,4 @@ class Share < ActiveRecord::Base
       queue.concat(items_hash[item.id])
     end
   end
-
-
 end
