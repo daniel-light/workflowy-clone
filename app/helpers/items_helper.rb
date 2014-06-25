@@ -11,7 +11,9 @@ module ItemsHelper
     end
 
     ancestors.reverse.map do |item|
-      "<a href=\"#{items_path(item)}\">#{h(item.title)}</a> >"
+      "<a href=\"#{
+        item ? item_path(item) : items_path
+      }\">#{h(item.title)}</a> >"
     end .join('')
   end
 end

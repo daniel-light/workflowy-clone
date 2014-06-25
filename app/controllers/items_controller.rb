@@ -9,47 +9,37 @@ class ItemsController < ApplicationController
 
   def show
     @items_hash = current_user.items_hash(params[:id])
-    @item = @items_hash[:head]
     @new_item = @item.children.new(rank: max_rank(@items_hash[@item.id]) + 100)
     raise ActionController::RoutingError.new('Not Found') unless @item
   end
 
   def create
     @items_hash = current_user.items_hash(params[:id])
+    @item = @items_hash[:head]
 
-    if @item = @items_hash[:head]
-      @new_item = @item.children.new(item_params)
-      @new_item.user_id = current_user.id
-      @new_item.rank ||= max_rank(@items_hash[@item.id]) + 100
-      if @new_item.save
-        redirect_to item_url(@new_item.parent_id)
-      else
-        flash.now[:alert] = @new_item.errors.full_messages
-        render :show
-      end
+    @new_item = (@item ? @item.children : current_user.items).new(item_params)
+    @new_item.rank ||= max_rank(@items_hash[@item.try(:id)]) + 100
 
+    if @new_item.save
+      redirect_to @item ? item_url(@item) : items_url
     else
-      @new_item = current_user.items.new(item_params)
-      @new_item.rank ||= max_rank(@items_hash[nil]) + 100
-      if @new_item.save
-        redirect_to items_url
-      else
-        render :index
-      end
+      flash.now[:alert] = @new_item.errors.full_messages
+      render @item ? :show : :index
     end
   end
 
   def collapse
-    item = Item.find(params[:id])
-    view = item.views.where(user_id: current_user.id).first
+    view = @item.views.where(user_id: current_user.id).first
     view.toggle_collapsed!
 
-    redirect_to params[:return_id] ? items_url : item_url(params[:return_id])
+    if params[:return_id] && !params[:return_id].empty?
+      redirect_to item_url(params[:return_id])
+    else
+      redirect_to items_url
+    end
   end
 
   def update
-    @item = Item.find(params[:id])
-
     if @item.update(item_params)
       redirect_to item_url(@item)
     else
@@ -59,7 +49,7 @@ class ItemsController < ApplicationController
   end
 
   def destroy
-    Item.find(params[:id]).destroy
+    @item.destroy
     redirect_to items_url
   end
 
@@ -78,5 +68,4 @@ class ItemsController < ApplicationController
     @item = Item.find(params[:id])
     redirect_to root_url unless @item.user_id == current_user.id
   end
-
 end

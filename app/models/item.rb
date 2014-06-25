@@ -13,6 +13,10 @@ class Item < ActiveRecord::Base
            dependent: :destroy,
            inverse_of: :parent
 
+  before_validation do
+    self.user_id ||= parent.try(:user_id)
+  end
+
   after_create do
     views.create!(user_id: user_id)
   end
