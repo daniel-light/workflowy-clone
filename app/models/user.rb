@@ -5,6 +5,8 @@ class User < ActiveRecord::Base
 
   has_many :items
   has_many :views
+  has_many :shares
+  has_many :shared_items, through: :shares, source: :item
 
   before_validation do
     self.session_token ||= SecureRandom.urlsafe_base64(32)

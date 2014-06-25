@@ -70,5 +70,7 @@ RSpec.describe User, :type => :model do
   context 'associations' do
     it { should have_many(:items) }
     it { should have_many(:views) }
+    it { should have_many(:shares) }
+    it { should have_many(:shared_items) }
   end
 end

@@ -3,7 +3,6 @@ require 'rails_helper'
 RSpec.describe Share, :type => :model do
   
   context 'validations' do
-    
     it 'should be valid with a user_id and an item_id' do
       expect(Share.create(user_id: 1, item_id: 1)).to be_valid
     end
@@ -30,5 +29,10 @@ RSpec.describe Share, :type => :model do
       share.valid?
       expect(share.can_edit).to be false
     end
+  end
+  
+  context 'associations' do
+    it { should belong_to(:user) }
+    it { should belong_to(:item) }
   end
 end

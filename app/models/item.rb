@@ -4,6 +4,7 @@ class Item < ActiveRecord::Base
 
   belongs_to :user
   has_many :views
+  has_many :shares
 
   belongs_to :parent, class_name: 'Item', inverse_of: :children
 
