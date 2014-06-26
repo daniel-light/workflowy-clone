@@ -40,6 +40,20 @@ class User < ActiveRecord::Base
     session_token
   end
 
+  def nested_items
+    @better_hash = Hash.new do |hash, key|
+      hash[key] = {item: nil, parent: nil, children: []}
+    end
+
+    items.order(:rank).each do |item|
+      @better_hash[item.id][:item] = item
+      @better_hash[item.id][:parent] = @better_hash[item.parent_id]
+      @better_hash[item.parent_id][:children] << @better_hash[item.id]
+    end
+
+    @better_hash
+  end
+
   def views_hash(head_id = nil)
     return @views_hash if @views_hash
 
