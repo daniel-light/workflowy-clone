@@ -13,7 +13,7 @@ class ItemsController < ApplicationController
   end
 
   def create
-    @item = Item.find(params[:id]) if params[:id]
+    @item = Item.friendly.find(params[:id]) if params[:id]
     @nested_items = current_user.nested_items
 
     @new_item = (@item ? @item.children : current_user.items).new(item_params)
@@ -29,6 +29,7 @@ class ItemsController < ApplicationController
 
   def collapse
     view = @item.views.where(user_id: current_user.id).first
+    view ||= @item.views.new(user_id: current_user.id)
     view.toggle_collapsed!
 
     if params[:return_id] && !params[:return_id].empty?
@@ -66,7 +67,7 @@ class ItemsController < ApplicationController
   end
 
   def require_owner
-    @item = Item.find(params[:id])
+    @item = Item.friendly.find(params[:id])
     redirect_to root_url unless @item.user_id == current_user.id
   end
 

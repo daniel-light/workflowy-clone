@@ -19,6 +19,9 @@ class Item < ActiveRecord::Base
     self.uuid ||= SecureRandom::uuid
   end
 
+  extend FriendlyId
+  friendly_id :uuid
+
   def shortened_notes
     if notes
       notes.split(/\r?\n/).first
