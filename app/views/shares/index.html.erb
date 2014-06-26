@@ -1,0 +1,6 @@
+<%= render @shares %>
+<%= form_for @share, url: item_shares_url(@item) do |f| %>
+  <%= f.text_field :user_id %>
+  <%= f.check_box :can_edit %>
+  <%= f.submit %>
+<% end %>

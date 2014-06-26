@@ -18,6 +18,11 @@ RSpec.describe Share, :type => :model do
       should validate_uniqueness_of(:user_id).scoped_to(:item_id)
     end
 
+    it 'should be able to have multiple users per item' do
+      create(:share, user_id: 1, item_id: 1)
+      expect(build(:share, user_id: 2, item_id: 1)).to be_valid
+    end
+
     it 'should automatically set a nil can_edit' do
       share = build(:share, can_edit: nil)
       share.valid?

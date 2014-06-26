@@ -1,0 +1,4 @@
+<p>
+  <%= share.user.try(:email) || 'public' %>
+  <%= share.can_edit ? 'can' : 'can\'t' %> edit
+</p>

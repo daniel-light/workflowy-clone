@@ -1,7 +1,6 @@
 class ItemsController < ApplicationController
   before_action :require_signed_in
   before_action :require_editor, only: [:update]
-  before_action :require_authorized, except: [:index, :create]
 
   def index
     @views_hash = current_user.views_hash
@@ -9,6 +8,7 @@ class ItemsController < ApplicationController
   end
 
   def show
+    @item = Item.find(params[:id])
     @views_hash = current_user.views_hash(params[:id])
     @new_item = @item.children.new(rank: max_rank(@views_hash[@item.id].map(&:item)) + 100)
     raise ActionController::RoutingError.new('Not Found') unless @item

@@ -9,9 +9,11 @@
   <ul class="list">
     <%= render @views_hash[@item.id] %>
   </ul>
-  <h2>Add Item</h2>
-  <%= render 'form', item: @new_item %>
 </article>
-<aside>
-  <%= button_to 'Delete', item_url(@item), method: :delete %>
-</aside>
+<% if @item.can_edit?(current_user) %>
+  <aside>
+    <h2>Add Item</h2>
+    <%= render 'form', item: @new_item %>
+    <%= button_to 'Delete', item_url(@item), method: :delete %>
+  </aside>
+<% end %>
