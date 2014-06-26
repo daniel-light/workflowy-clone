@@ -7,24 +7,12 @@ RSpec.describe Item, :type => :model do
       expect(create(:item)).to be_valid
     end
 
-    it 'must have a user' do
-      expect(build(:item, user_id: nil)).not_to be_valid
-    end
+    it { should validate_presence_of(:user_id) }
 
-    it 'must have a title' do
-      expect(build(:item, title: nil)).not_to be_valid
-    end
+    it { should validate_presence_of(:title) }
 
-    it 'must have a rank' do
-      expect(build(:item, rank: nil)).not_to be_valid
-    end
-
-    it 'cannot have the same rank as another item with the same parent' do
-      parent = create(:item)
-      first_child = parent.children.create(title: 'first', user_id: 1, rank: 1)
-      second_child = parent.children.build(title: 'second', user_id: 1, rank: 1)
-      expect(second_child).not_to be_valid
-    end
+    it { should validate_presence_of(:rank) }
+    it { should validate_uniqueness_of(:rank).scoped_to(:parent_id) }
 
     it 'can have the same rank as another item with a different parent' do
       parent = create(:item)
