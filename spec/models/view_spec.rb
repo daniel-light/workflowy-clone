@@ -26,17 +26,5 @@ RSpec.describe View, :type => :model do
   context 'associations' do
     it { should belong_to(:user) }
     it { should belong_to(:item) }
-
-    context 'hooks' do
-      it 'should create a root view automatically for a new user' do
-        user = create(:user)
-        expect(user.views.first.item_id).to eq(nil)
-      end
-
-      it 'should create a view for an item\'s owner on creation' do
-        item = create(:item)
-        expect(item.views.first.user_id).to eq(item.user_id)
-      end
-    end
   end
 end

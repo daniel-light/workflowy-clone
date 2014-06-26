@@ -18,8 +18,6 @@ class Item < ActiveRecord::Base
     self.user_id ||= parent.try(:user_id)
   end
 
-  after_create :create_views
-
   def shortened_notes
     if notes
       notes.split(/\r?\n/).first
@@ -46,18 +44,6 @@ class Item < ActiveRecord::Base
   def is_shared_with_edit?(editor)
     shares.any? do |share|
       share.can_edit && (share.user_id.nil? || share.user_id == editor.try(:id))
-    end
-  end
-
-  private
-
-  def create_views
-    views.create!(user_id: user_id)
-
-    if parent
-      parent.shares.each do |share|
-        views.create!(user_id: share.user_id)
-      end
     end
   end
 end
