@@ -4,7 +4,7 @@ class Item < ActiveRecord::Base
   validates :url, length: {is: 43}, uniqueness: true, allow_nil: true
 
   belongs_to :user
-  has_many :views
+  has_many :views, dependent: :destroy
   has_many :shares
 
   belongs_to :parent, class_name: 'Item', inverse_of: :children
@@ -18,7 +18,7 @@ class Item < ActiveRecord::Base
     self.user_id ||= parent.try(:user_id)
   end
 
-  after_create :create_views_and_shares
+  after_create :create_views
 
   def shortened_notes
     if notes
@@ -55,7 +55,7 @@ class Item < ActiveRecord::Base
 
   private
 
-  def create_views_and_shares
+  def create_views
     views.create!(user_id: user_id)
 
     if parent

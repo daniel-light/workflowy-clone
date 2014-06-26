@@ -28,4 +28,16 @@ class Share < ActiveRecord::Base
       queue.concat(items_hash[item.id])
     end
   end
+
+  def destroy_views
+    views_hash = item.user.views_hash
+    queue = [item.views.find_by(user_id: user_id)]
+
+    until queue.empty?
+      view = queue.shift
+      next if view.item.shares.length > 1
+      queue.concat(views_hash[view.item.id])
+      view.destroy
+    end
+  end
 end
