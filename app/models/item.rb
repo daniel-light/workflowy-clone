@@ -26,6 +26,19 @@ class Item < ActiveRecord::Base
     end
   end
 
+  def can_view?(viewer)
+    return true if user_id == viewer.try(:id)
+    nested_items = user.nested_items
+
+    current_item = nested_items[id][:item]
+    until current_item == nil
+      return true if current_item.is_shared_with?(viewer)
+      current_item = nested_items[current_item.id][:parent][:item]
+    end
+
+    false
+  end
+
   def can_edit?(editor)
     return true if user_id == editor.try(:id)
     nested_items = user.nested_items
@@ -40,6 +53,12 @@ class Item < ActiveRecord::Base
   end
 
   protected
+
+  def is_shared_with?(viewer)
+    shares.any? do |share|
+      share.user_id.nil? || share.user_id == viewer.try(:id)
+    end
+  end
 
   def is_shared_with_edit?(editor)
     shares.any? do |share|

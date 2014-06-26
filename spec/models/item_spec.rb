@@ -52,6 +52,32 @@ RSpec.describe Item, :type => :model do
     it { should have_many(:shares) }
   end
 
+  context '#can_view?' do
+    let(:items) { [create(:item, id: 1, user: owner),
+                   create(:item, id: 2, parent_id: 1),
+                   create(:item, id: 3, parent_id: 2)] }
+    let(:owner) { create(:user, id: 1) }
+    let(:user) { User.create(id: 2, email: 'a', password: '123456') }
+
+    it 'should be viewable by the owner' do
+      expect(items.all? { |item| item.can_view?(owner) }).to be true
+    end
+
+    it 'shouldn\'t be viewable by another user' do
+      expect(items.none? { |item| item.can_view?(user) }).to be true
+    end
+
+    it 'should be viewable by a user once shared' do
+      items.first.shares.create!(user_id: 2)
+      expect(items.all? { |item| item.can_view?(user) }).to be true
+    end
+
+    it 'should be viewable by anyone once shared anonymously' do
+      items.first.shares.create!(user_id: nil)
+      expect(items.all? { |item| item.can_view?(nil) }).to be true
+    end
+  end
+
   context '#can_edit?' do
     let(:items) { [create(:item, id: 1, user: owner),
                    create(:item, id: 2, parent_id: 1),
