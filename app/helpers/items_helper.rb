@@ -1,4 +1,13 @@
 module ItemsHelper
+
+  def nested_children(item)
+    if @nested_items
+      @nested_items[item.try(:id)][:children].map { |hash| hash[:item] }
+    else
+      []
+    end
+  end
+
   def breadcrumbs_from_hash(views_hash, item)
     parent_id = item.parent_id
     ancestors = []

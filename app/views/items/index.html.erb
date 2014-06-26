@@ -1,7 +1,7 @@
 <h1>Home</h1>
 
 <ul class="list">
-  <%= render @views_hash[nil].select { |view| view.item.shares.length == 0 } %>
+  <%= render nested_children(nil) %>
 </ul>
 <h2>Add Item</h2>
 <%= render 'form', item: @new_item %>
