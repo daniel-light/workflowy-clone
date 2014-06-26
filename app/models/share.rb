@@ -1,5 +1,5 @@
 class Share < ActiveRecord::Base
-  validates :user_id, :item_id, presence: true
+  validates :item_id, presence: true
   validates :user_id, uniqueness: {scope: :item_id}
   validates :can_edit, inclusion: {in: [false, true]}
 
@@ -17,6 +17,8 @@ class Share < ActiveRecord::Base
   private
 
   def create_views
+    return if user_id.nil?
+
     items_hash = item.user.items_hash
     queue = [item]
 

@@ -51,4 +51,40 @@ RSpec.describe Item, :type => :model do
     it { should have_many(:views) }
     it { should have_many(:shares) }
   end
+
+  context '#can_edit?' do
+    let(:items) { [create(:item, id: 1, user: owner),
+                   create(:item, id: 2, parent_id: 1),
+                   create(:item, id: 3, parent_id: 2)] }
+    let(:owner) { create(:user, id: 1) }
+    let(:user) { User.create(id: 2, email: 'a', password: '123456') }
+
+    it 'should be editable by the owner' do
+      expect(items.all? { |item| item.can_edit?(owner) }).to be true
+    end
+
+    it 'shouldn\'t be editable by another user' do
+      expect(items.none? { |item| item.can_edit?(user) }).to be true
+    end
+
+    it 'should be editable by a user once shared with edit set' do
+      items.first.shares.create!(user_id: 2, can_edit: true)
+      expect(items.all? { |item| item.can_edit?(user) }).to be true
+    end
+
+    it 'should\'t be editable by a user if shared without edit set' do
+      items.first.shares.create!(user_id: 2, can_edit: false)
+      expect(items.none? { |item| item.can_edit?(user) }).to be true
+    end
+
+    it 'should be editable by anyone once shared anonymously with edit set' do
+      items.first.shares.create!(user_id: nil, can_edit: true)
+      expect(items.all? { |item| item.can_edit?(nil) }).to be true
+    end
+
+    it 'should\'t be editable by anonymous without edit set' do
+      items.first.shares.create!(user_id: 2, can_edit: false)
+      expect(items.none? { |item| item.can_edit?(nil) }).to be true
+    end
+  end
 end

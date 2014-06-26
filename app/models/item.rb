@@ -29,23 +29,28 @@ class Item < ActiveRecord::Base
   end
 
   def can_edit?(user)
-    return true if user_id == user.id
+    return true if user_id == user.try(:id)
+    items_hash = user.try(:item_hash) || self.user.items_hash
 
-    return true if shares.any? do |share|
-      share.can_edit && (share.user_id.nil? || share.user_id == user.id)
-    end
+    return true if is_shared_with_edit(user)
 
     top_parent_id = parent_id
     until top_parent_id == nil
-      grand_parent_id = user.items_hash[:reverse][top_parent_id]
-      top_parent = user.items_hash[grand_parent_id].find { |item| item.id == top_parent_id }
+      grand_parent_id = items_hash[:reverse][top_parent_id]
+      top_parent = items_hash[grand_parent_id].find { |item| item.id == top_parent_id }
       top_parent_id = grand_parent_id
-      top_parent.nil? || (return true if top_parent.shares.any? do |share|
-        share.can_edit && (share.user_id.nil? || share.user_id == user.id)
-      end)
+      return true if top_parent && top_parent.is_shared_with_edit(user)
     end
 
     false
+  end
+
+  protected
+
+  def is_shared_with_edit(user)
+    shares.any? do |share|
+      share.can_edit && (share.user_id.nil? || share.user_id == user.id)
+    end
   end
 
   private

@@ -13,8 +13,6 @@ RSpec.describe Share, :type => :model do
 
     it { should validate_presence_of(:item_id) }
 
-    it { should validate_presence_of(:user_id) }
-
     it do
       create(:share, user_id: 0, item_id: 1)
       should validate_uniqueness_of(:user_id).scoped_to(:item_id)
