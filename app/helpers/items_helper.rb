@@ -13,4 +13,8 @@ module ItemsHelper
       "<a href=\"#{item_path(item)}\">#{h(item.title)}</a> >"
     end .join('')
   end
+
+  def find_view(item)
+    item.views.find { |view| view.user_id == current_user.id } || item.views.new
+  end
 end
