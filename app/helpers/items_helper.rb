@@ -1,12 +1,12 @@
 module ItemsHelper
-  def breadcrumbs_from_hash(items_hash, item)
+  def breadcrumbs_from_hash(views_hash, item)
     parent_id = item.parent_id
     ancestors = []
 
     until parent_id == nil
-      grand_parent_id = items_hash[:reverse][parent_id]
-      parent = items_hash[grand_parent_id].find { |item| item.id == parent_id }
-      ancestors << parent
+      grand_parent_id = views_hash[:reverse][parent_id]
+      parent = views_hash[grand_parent_id].find { |view| view.item.id == parent_id }
+      ancestors << parent.item
       parent_id = grand_parent_id
     end
 

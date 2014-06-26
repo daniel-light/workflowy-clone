@@ -1,19 +1,21 @@
 class ItemsController < ApplicationController
   before_action :require_signed_in
+  before_action :require_editor, only: [:update]
   before_action :require_authorized, except: [:index, :create]
 
   def index
-    @items_hash = current_user.items_hash
+    @views_hash = current_user.views_hash
     @new_item = current_user.items.new
   end
 
   def show
-    @items_hash = current_user.items_hash(params[:id])
-    @new_item = @item.children.new(rank: max_rank(@items_hash[@item.id]) + 100)
+    @views_hash = current_user.views_hash(params[:id])
+    @new_item = @item.children.new(rank: max_rank(@views_hash[@item.id].map(&:item)) + 100)
     raise ActionController::RoutingError.new('Not Found') unless @item
   end
 
   def create
+    return if require_editor
     @items_hash = current_user.items_hash(params[:id])
     @item = @items_hash[:head]
 
@@ -67,5 +69,10 @@ class ItemsController < ApplicationController
   def require_authorized
     @item = Item.find(params[:id])
     redirect_to root_url unless @item.user_id == current_user.id
+  end
+
+  def require_editor
+    @item = Item.find(params[:id])
+    redirect_to root_url unless @item.can_edit?(current_user)
   end
 end

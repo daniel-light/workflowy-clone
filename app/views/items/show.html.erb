@@ -1,13 +1,13 @@
 <nav>
   <a href="/items">Home ></a>
-  <%= breadcrumbs_from_hash(@items_hash, @item).html_safe %>
+  <%= breadcrumbs_from_hash(@views_hash, @item).html_safe %>
 </nav>
 <header>
   <%= render 'form', item: @item %>
 </header>
 <article>
   <ul class="list">
-    <%= render @items_hash[@item.id] %>
+    <%= render @views_hash[@item.id] %>
   </ul>
   <h2>Add Item</h2>
   <%= render 'form', item: @new_item %>

@@ -8,8 +8,8 @@
     <input type="hidden" name="return_id" value="<%= @item.try(:id) %>">
 
     <button>
-      <% unless @items_hash[item.id].empty? %>
-        <span><%= item.collapsed ? '+' : '-' %></span>
+      <% unless @views_hash[item.id].empty? %>
+        <span><%= collapsed ? '+' : '-' %></span>
       <% end %>
     </button>
   </form>
@@ -17,10 +17,10 @@
   <a class="bullet" href="<%= item_url(item) %>"></a>
   <%= item.title %>
   <%= item.shortened_notes %>
-  <% unless item.collapsed %>
+  <% unless collapsed %>
     <section class="indented">
       <ul class="list">
-        <%= render @items_hash[item.id] %>
+        <%= render @views_hash[item.id] %>
       </ul>
     </section>
   <% end %>
