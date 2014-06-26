@@ -13,11 +13,11 @@ class ItemsController < ApplicationController
   end
 
   def create
-    @items_hash = current_user.items_hash(params[:id])
-    @item = @items_hash[:head]
+    @item = Item.find(params[:id]) if params[:id]
+    @nested_items = current_user.nested_items
 
     @new_item = (@item ? @item.children : current_user.items).new(item_params)
-    @new_item.rank ||= max_rank(@items_hash[@item.try(:id)]) + 100
+    @new_item.rank ||= max_rank(nested_children(@item)) + 100
 
     if @new_item.save
       redirect_to @item ? item_url(@item) : items_url
