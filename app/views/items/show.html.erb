@@ -1,13 +1,13 @@
 <nav>
   <a href="/items">Home ></a>
-  <%= breadcrumbs_from_hash(@views_hash, @item).html_safe %>
+  <%= breadcrumbs(@item).html_safe %>
 </nav>
 <header>
   <%= render 'form', item: @item %>
 </header>
 <article>
   <ul class="list">
-    <%= render @views_hash[@item.id] %>
+    <%= render nested_children(@item) %>
   </ul>
 </article>
 <% if @item.can_edit?(current_user) %>

@@ -8,13 +8,11 @@ class ItemsController < ApplicationController
   end
 
   def show
-    @views_hash = current_user.views_hash(params[:id])
-    @new_item = @item.children.new(rank: max_rank(@views_hash[@item.id].map(&:item)) + 100)
-    raise ActionController::RoutingError.new('Not Found') unless @item
+    @nested_items = current_user.nested_items
+    @new_item = @item.children.new(rank: max_rank(nested_children(@item)) + 100)
   end
 
   def create
-    return if require_editor
     @items_hash = current_user.items_hash(params[:id])
     @item = @items_hash[:head]
 
@@ -54,6 +52,8 @@ class ItemsController < ApplicationController
     redirect_to items_url
   end
 
+  helper_method :nested_children
+
   private
 
   def item_params
@@ -68,5 +68,13 @@ class ItemsController < ApplicationController
   def require_owner
     @item = Item.find(params[:id])
     redirect_to root_url unless @item.user_id == current_user.id
+  end
+
+  def nested_children(item)
+    if @nested_items
+      @nested_items[item.try(:id)][:children].map { |hash| hash[:item] }
+    else
+      []
+    end
   end
 end
