@@ -40,6 +40,28 @@ class User < ActiveRecord::Base
     session_token
   end
 
+  def views_hash(head_id = nil)
+    return @views_hash if @views_hash
+
+    @views_hash = Hash.new { |hash, key| hash[key] = [] }
+    @views_hash[:head] = nil
+    @views_hash[:reverse] = {}
+
+    views
+      .includes(item: :shares)
+      .where('shares.user_id' => [nil, id])
+      .order('items.rank')
+    .each do |view|
+      next if view.item.nil?
+      @views_hash[view.item.parent_id] << view
+      @views_hash[:reverse][view.item.id] = view.item.parent_id
+      @views_hash[:head] = view if view.item.id == head_id.to_i
+    end
+
+    @views_hash
+  end
+
+
   def items_hash(head_id = nil)
     return @items_hash if @items_hash
 
