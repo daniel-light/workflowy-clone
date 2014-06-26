@@ -1,7 +1,7 @@
 class Item < ActiveRecord::Base
-  validates :user_id, :title, :rank, presence: true
+  validates :user_id, :title, :rank, :uuid, presence: true
   validates :rank, uniqueness: {scope: [:parent_id, :user_id]}
-  validates :url, length: {is: 43}, uniqueness: true, allow_nil: true
+  validates :uuid, length: {is: 36}, uniqueness: true
 
   belongs_to :user
   has_many :views, dependent: :destroy
@@ -16,6 +16,7 @@ class Item < ActiveRecord::Base
 
   before_validation do
     self.user_id ||= parent.try(:user_id)
+    self.uuid ||= SecureRandom::uuid
   end
 
   def shortened_notes

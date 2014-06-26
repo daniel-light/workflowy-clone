@@ -34,13 +34,13 @@ RSpec.describe Item, :type => :model do
       expect(second_child).to be_valid
     end
 
-    it do
-      create(:item, url: 'a' * 43)
-      should validate_uniqueness_of(:url).allow_nil
-    end
+    it { should validate_uniqueness_of(:uuid) }
+    it { should ensure_length_of(:uuid).is_equal_to(36) }
 
-    it 'should not allow url strings that are the incorrect length' do
-      expect(build(:item, url: 'abc')).not_to be_valid
+    it 'should automatically set a blank uuid' do
+      item = build(:item, uuid: nil)
+      item.valid?
+      expect(item.uuid.length).to eq(36)
     end
   end
 
