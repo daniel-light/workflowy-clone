@@ -12,10 +12,15 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'spring',        group: :development
 
-gem 'bcrypt'
-gem 'friendly_id'
 
 gem 'thin'
+
+gem 'bcrypt'
+gem 'omniauth-google-oauth2'
+gem 'figaro'
+
+gem 'friendly_id'
+
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
