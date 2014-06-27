@@ -15,5 +15,6 @@
     <h2>Add Item</h2>
     <%= render 'form', item: @new_item %>
     <%= button_to 'Delete', item_url(@item), method: :delete %>
+    <%= link_to 'Share', item_shares_url(@item) %>
   </aside>
 <% end %>

@@ -14,8 +14,7 @@ class View < ActiveRecord::Base
   belongs_to :item
 
   def toggle_collapsed!
-    self.collapsed = collapsed ? false : true
-    save!
+    update!(collapsed: !collapsed)
     collapsed
   end
 end

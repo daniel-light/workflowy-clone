@@ -1,4 +1,23 @@
 <p>
   <%= share.user.try(:email) || 'public' %>
-  <%= share.can_edit ? 'can' : 'can\'t' %> edit
+  <form action="<%= editable_share_url(share) %>" method="post">
+    <input type="hidden"
+      name="authenticity_token"
+      value="<%= form_authenticity_token %>">
+    <input type="hidden" name="_method" value="patch">
+
+    <button>
+      <%= share.can_edit ? 'can' : 'can\'t' %> edit
+    </button>
+  </form>
+  <form action="<%= share_url(share) %>" method="post">
+    <input type="hidden"
+      name="authenticity_token"
+      value="<%= form_authenticity_token %>">
+    <input type="hidden" name="_method" value="delete">
+
+    <button>
+      Unshare
+    </button>
+  </form>
 </p>

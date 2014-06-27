@@ -66,16 +66,16 @@ class ItemsController < ApplicationController
     children.max_by(&:rank).try(:rank) || 0
   end
 
-  def require_owner
-    @item = Item.friendly.find(params[:id])
-    redirect_to root_url unless @item.user_id == current_user.id
-  end
-
   def nested_children(item)
     if @nested_items
       @nested_items[item.try(:id)][:children].map { |hash| hash[:item] }
     else
       []
     end
+  end
+
+  def require_owner
+    @item = Item.friendly.find(params[:id])
+    redirect_to root_url unless @item.user_id == current_user.id
   end
 end

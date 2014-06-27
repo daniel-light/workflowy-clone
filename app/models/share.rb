@@ -13,6 +13,11 @@ class Share < ActiveRecord::Base
   belongs_to :user
   belongs_to :item
 
+  def toggle_editable!
+    update!(can_edit: !can_edit)
+    can_edit
+  end
+
   private
 
   def no_self_sharing
