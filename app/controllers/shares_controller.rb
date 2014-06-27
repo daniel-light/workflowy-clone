@@ -1,6 +1,6 @@
 class SharesController < ApplicationController
   before_action :require_signed_in
-  before_action :require_owner
+  before_action :require_owner, except: [:show]
 
   def index
     @shares = @item.shares.includes(:user)
@@ -28,6 +28,12 @@ class SharesController < ApplicationController
   def destroy
     @share.destroy
     redirect_to item_shares_url(@share.item_id)
+  end
+
+  def show
+    @item = Item.friendly.find(params[:id])
+    @new_item = @item.children.new
+    @nested_items = @item.user.nested_items
   end
 
   private

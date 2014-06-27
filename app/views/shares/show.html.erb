@@ -1,0 +1,19 @@
+<header>
+  <% if @item.can_edit?(current_user) %>
+    <%= render 'items/form', item: @item %>
+  <% else %>
+    <h1><%= @item.title %></h1>
+    <p><%= @item.notes %></p>
+  <% end %>
+</header>
+<article>
+  <ul class="list">
+    <%= render nested_children(@item) %>
+  </ul>
+</article>
+<% if @item.can_edit?(current_user) %>
+  <aside>
+    <h2>Add Item</h2>
+    <%= render 'items/form', item: @new_item %>
+  </aside>
+<% end %>

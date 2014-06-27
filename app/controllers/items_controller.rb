@@ -53,25 +53,10 @@ class ItemsController < ApplicationController
     redirect_to items_url
   end
 
-  helper_method :nested_children
-
   private
 
   def item_params
     params.require(:item).permit(:title, :notes, :rank)
-  end
-
-  def max_rank(parent)
-    children = parent.respond_to?(:children) ? parent.children : parent.to_a
-    children.max_by(&:rank).try(:rank) || 0
-  end
-
-  def nested_children(item)
-    if @nested_items
-      @nested_items[item.try(:id)][:children].map { |hash| hash[:item] }
-    else
-      []
-    end
   end
 
   def require_owner
