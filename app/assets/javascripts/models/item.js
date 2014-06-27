@@ -12,5 +12,9 @@ Workflowy.Models.Item = Backbone.Model.extend({
 
   initialize: function(options) {
     this.parent = options.parent;
+  },
+
+  shortened_notes: function() {
+    this.notes.split(/\r?\n/, 1)[0]
   }
 });
