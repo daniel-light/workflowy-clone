@@ -15,8 +15,7 @@ gem 'spring',        group: :development
 gem 'bcrypt'
 gem 'friendly_id'
 
-# Use unicorn as the app server
-# gem 'unicorn'
+gem 'thin'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
