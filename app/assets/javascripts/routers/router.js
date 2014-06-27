@@ -1,6 +1,7 @@
 Workflowy.Routers.Router = Backbone.Router.extend({
   routes: {
-    '': 'index'
+    '': 'index',
+    ':uuid': 'show'
   },
 
   initialize: function(options) {
@@ -9,6 +10,12 @@ Workflowy.Routers.Router = Backbone.Router.extend({
 
   index: function() {
     var view = new Workflowy.Views.IndexView({collection: Workflowy.items});
+    this._swapView(view);
+  },
+
+  show: function(uuid) {
+    var item = Workflowy.item_lookup[uuid];
+    var view = new Workflowy.Views.ShowView({model: item});
     this._swapView(view);
   },
 

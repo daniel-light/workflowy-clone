@@ -5,6 +5,8 @@ window.Workflowy = {
   Routers: {},
   initialize: function() {
     var items = JSON.parse($('#bootstrapped_items_json').html()).items;
+    Workflowy.item_lookup = {};
+    Workflowy.item_id = {};
     Workflowy.items = new Workflowy.Collections.Items(items, {parse: true});
     new Workflowy.Routers.Router({$rootEl: $('#content')});
     Backbone.history.start();

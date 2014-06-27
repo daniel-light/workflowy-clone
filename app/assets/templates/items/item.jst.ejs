@@ -2,7 +2,7 @@
 <a class="bullet" href="#<%= item.get('uuid') %>"></a>
 
 <%= item.escape('title') %>
-<%= item.shortened_notes() %>
+<%= item.shortenedNotes() %>
 
 <% if (!item.get('collapsed')) { %>
   <section class="indented">
