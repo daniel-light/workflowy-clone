@@ -6,6 +6,7 @@ class RootController < ApplicationController
       @nested_items.each do |key, item_hash|
         item_hash.delete(:parent)
       end
+      @nested_items = @nested_items[nil][:children]
       render :index
     else
       @user = User.new

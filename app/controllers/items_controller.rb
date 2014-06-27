@@ -14,6 +14,7 @@ class ItemsController < ApplicationController
 
   def create
     @item = Item.friendly.find(params[:id]) if params[:id]
+    return redirect_to items_url unless @item.can_edit?(current_user)
     @nested_items = current_user.nested_items
 
     @new_item = (@item ? @item.children : current_user.items).new(item_params)

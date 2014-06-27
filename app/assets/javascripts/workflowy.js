@@ -4,7 +4,8 @@ window.Workflowy = {
   Views: {},
   Routers: {},
   initialize: function() {
-    console.log('Hello from Backbone!');
+    var items = JSON.parse($('#bootstrapped_items_json').html()).items
+    Workflowy.items = new Workflowy.Collections.Items(items, {parse: true})
   }
 };
 
