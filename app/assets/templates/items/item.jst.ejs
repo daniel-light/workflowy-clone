@@ -1,0 +1,11 @@
+<a class="collapser"></a>
+<a class="bullet"></a>
+
+<%= item.escape('title') %>
+<%= item.shortened_notes() %>
+
+<% if (!item.get('collapsed')) { %>
+  <section class="indented">
+    <ul class="list"></ul>
+  </section>
+<% } %>

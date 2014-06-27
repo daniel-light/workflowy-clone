@@ -8,7 +8,7 @@ Workflowy.Routers.Router = Backbone.Router.extend({
   },
 
   index: function() {
-    var view = new Workflowy.Views.ItemsIndex({collection: Workflowy.items});
+    var view = new Workflowy.Views.IndexView({collection: Workflowy.items});
     this._swapView(view);
   },
 
