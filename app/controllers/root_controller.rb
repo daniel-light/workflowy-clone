@@ -2,9 +2,14 @@ class RootController < ApplicationController
 
   def index
     if signed_in?
-      redirect_to items_url
+      @nested_items = current_user.nested_items
+      @nested_items.each do |key, item_hash|
+        item_hash.delete(:parent)
+      end
+      render :index
     else
       @user = User.new
+      render :home
     end
   end
 end

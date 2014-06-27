@@ -21,6 +21,8 @@ gem 'figaro'
 
 gem 'friendly_id'
 
+gem 'backbone-on-rails'
+
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
