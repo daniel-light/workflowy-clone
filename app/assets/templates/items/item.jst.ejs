@@ -1,11 +1,10 @@
 <a class="collapser"></a>
-<a class="bullet"></a>
+<a class="bullet" href="#<%= item.get('uuid') %>"></a>
 
 <%= item.escape('title') %>
 <%= item.shortened_notes() %>
 
 <% if (!item.get('collapsed')) { %>
   <section class="indented">
-    <ul class="list"></ul>
   </section>
 <% } %>
