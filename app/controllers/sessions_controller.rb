@@ -22,6 +22,13 @@ class SessionsController < ApplicationController
     redirect_to new_session_url
   end
 
+  def google_login
+    user = User.find_or_create_by_auth_hash(request.env['omniauth.auth'])
+    sign_in!(user)
+
+    redirect_to root_url
+  end
+
   private
 
   def user_params

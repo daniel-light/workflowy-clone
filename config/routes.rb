@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   root to: 'root#index'
+
   resource :session, only: [:new, :create, :destroy]
+  get '/auth/google_oauth2/callback', to: 'sessions#google_login'
   resources :users, only: [:new, :create]
 
   resources :items, except: [:new, :edit], shallow: true do
