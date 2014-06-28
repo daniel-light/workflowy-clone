@@ -48,5 +48,22 @@ Workflowy.Models.Item = Backbone.Model.extend({
         this.set('collapsed', response.collapsed);
       }.bind(this)
     });
+  },
+
+  title: function(value) {
+    if (value !== null && value != this.get('title')) {
+      //TODO set undoable and unsaved
+      this.save({title: value}, {
+        silent: true,
+        patch: true,
+        success: function() {
+          //TODO clear saved
+        },
+        error: function() {
+          //TODO flash an error message
+        }
+      });
+    }
+    return this.get('title');
   }
 });

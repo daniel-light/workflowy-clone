@@ -46,10 +46,14 @@ class ItemsController < ApplicationController
 
   def update
     if @item.update(item_params)
-      redirect_to item_url(@item)
+      request.xhr? ? (render json: @item) : (redirect_to item_url(@item))
     else
       flash.now[:alert] = @item.errors.full_messages
-      render :edit
+      if request.xhr?
+        render status: 400, json: @item
+      else
+        render :edit
+      end
     end
   end
 

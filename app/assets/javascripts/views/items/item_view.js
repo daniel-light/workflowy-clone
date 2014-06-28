@@ -14,7 +14,8 @@ Workflowy.Views.Item = Backbone.View.extend({
   },
 
   events: {
-    'click .collapser': 'toggleCollapsed' // select this more precisely?
+    'click .collapser': 'toggleCollapsed', // select this more precisely?
+    'input .title': 'changeTitle'
   },
 
   render: function() {
@@ -35,5 +36,10 @@ Workflowy.Views.Item = Backbone.View.extend({
 
   toggleCollapsed: function() {
     this.model.toggleCollapsed();
+  },
+
+  changeTitle: function(event) {
+    this.model.title(event.currentTarget.innerHTML);
+    event.stopPropagation();
   }
 });

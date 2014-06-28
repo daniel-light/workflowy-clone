@@ -2,11 +2,11 @@
 
 </a>
 <a class="bullet" href="#<%= item.get('uuid') %>">
-  <div><div></div></div>
+  <div></div>
 </a>
 
-<p class="title"><%= item.escape('title') %></p>
-<p class="notes"><%= item.shortenedNotes() %></p>
+<p class="title" contentEditable><%= item.escape('title') %></p>
+<p class="notes" contentEditable><%= item.shortenedNotes() %></p>
 
 <section class="indented">
 </section>
