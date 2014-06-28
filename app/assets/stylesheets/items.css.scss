@@ -54,8 +54,10 @@
 }
 
 p.title {
+  white-space: pre-wrap;
 }
 p.notes {
+  white-space: pre-wrap;
   margin-left: 34px;
   font-size: 13px;
   color: #666;

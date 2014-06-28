@@ -26,7 +26,14 @@ Workflowy.Models.Item = Backbone.Model.extend({
   },
 
   shortenedNotes: function() {
-    return (this.get('notes') || '') && this.get('notes').split(/\r?\n/, 1)[0];
+    var notes = this.escape('notes') || '';
+    var lines = notes.split(/\r?\n/, 1);
+
+    if (lines.length > 1) {
+      return lines[0] + '...';
+    } else {
+      return lines[0];
+    }
   },
 
   aTag: function() {
@@ -38,6 +45,7 @@ Workflowy.Models.Item = Backbone.Model.extend({
 
   // do not record this into undoable actions or mark the document as unsaved
   toggleCollapsed: function() {
+    this.children().length === 0 &&& return;
     this.set('collapsed', !this.get('collapsed'))
 
     $.ajax({
@@ -65,5 +73,22 @@ Workflowy.Models.Item = Backbone.Model.extend({
       });
     }
     return this.get('title');
+  },
+
+  notes: function(value) {
+    if (value !== undefined && value != this.get('notes')) {
+      //TODO set undoable and unsaved
+      this.save({notes: value}, {
+        silent: true,
+        patch: true,
+        success: function() {
+          //TODO clear saved
+        },
+        error: function() {
+          //TODO flash an error message
+        }
+      });
+    }
+    return this.get('notes') || '';
   }
 });

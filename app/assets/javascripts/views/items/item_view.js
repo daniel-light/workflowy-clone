@@ -15,7 +15,10 @@ Workflowy.Views.Item = Backbone.View.extend({
 
   events: {
     'click .collapser': 'toggleCollapsed', // select this more precisely?
-    'input .title': 'changeTitle'
+    'input .title': 'changeTitle',
+    'focus .notes': 'expandNotes',
+    'blur .notes': 'collapseNotes',
+    'input .notes': 'changeNotes'
   },
 
   render: function() {
@@ -39,7 +42,22 @@ Workflowy.Views.Item = Backbone.View.extend({
   },
 
   changeTitle: function(event) {
-    this.model.title(event.currentTarget.innerHTML);
     event.stopPropagation();
+    this.model.title($(event.currentTarget).text());
+  },
+
+  expandNotes: function(event) {
+    event.stopPropagation();
+    event.currentTarget.innerHTML = this.model.escape('notes');
+  },
+
+  collapseNotes: function(event) {
+    event.stopPropagation();
+    event.currentTarget.innerHTML = this.model.shortenedNotes();
+  },
+
+  changeNotes: function(event) {
+    event.stopPropagation();
+    this.model.notes(event.currentTarget.innerText); //TODO firefox support
   }
 });
