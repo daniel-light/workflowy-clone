@@ -14,9 +14,3 @@
  *= require_tree .
  *= require_self
  */
-
-.clear-group:after {
-  content: '';
-  display: block;
-  clear: both;
-}

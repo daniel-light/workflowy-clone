@@ -9,10 +9,16 @@
 }
 
 .item {
+  @extend .clear-group;
   margin: 10px 0;
   padding-left: 11px;
 
-  form {
+  a.collapser {
+    display: block;
+    float: left;
+  }
+
+  form { // deprecated?
     display: inline;
 
     span {
@@ -27,7 +33,6 @@
 
 .bullet {
   display: block;
-  //position: absolute;
   margin: 1px 3px;
   width: 0;
   height: 0;

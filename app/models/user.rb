@@ -61,7 +61,13 @@ class User < ActiveRecord::Base
     end
 
     #TODO trim includes down?
-    items.includes([:shares, :views]).order(:rank).each do |item|
+    items
+      .includes([:shares, :views]) # we are deprecating views here, at the least
+      .joins('LEFT OUTER JOIN views ON items.id = views.item_id')
+      .where('views.user_id IS NULL OR views.user_id = ?', id)
+      .select('items.*, views.collapsed AS collapsed, views.id AS view_id')
+      .order(:rank)
+    .each do |item|
       @better_hash[item.id][:item] = item
       @better_hash[item.id][:parent] = @better_hash[item.parent_id]
       @better_hash[item.parent_id][:children] << @better_hash[item.id]

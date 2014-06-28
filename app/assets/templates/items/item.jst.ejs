@@ -1,4 +1,6 @@
-<a class="collapser"></a>
+<a class="collapser">
+  <%= item.get('collapsed') ? '+' : '-' %>
+</a>
 <a class="bullet" href="#<%= item.get('uuid') %>"></a>
 
 <%= item.escape('title') %>
