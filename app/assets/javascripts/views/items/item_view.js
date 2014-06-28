@@ -1,12 +1,12 @@
-Workflowy.Views.ItemView = Backbone.View.extend({
+Workflowy.Views.Item = Backbone.View.extend({
   tagName: 'li',
   template: JST['items/item'],
 
   initialize: function() {
     this.$el.addClass('item');
-    this.$el.data('id', this.model.get('uuid'));
+    this.$el.data('uuid', this.model.get('uuid'));
 
-    this.sublist = new Workflowy.Views.ListView({
+    this.sublist = new Workflowy.Views.List({
       collection: this.model.children()
     });
 
@@ -18,11 +18,11 @@ Workflowy.Views.ItemView = Backbone.View.extend({
   },
 
   render: function() {
-    var list_section = this.$el.children('section.indented');
-    list_section.children().detach();
+    this.$el.find('li.item').detach();
     this.$el.html(this.template({item: this.model}));
+
     if (!this.model.get('collapsed')) {
-      list_section = this.$el.children('section.indented');
+      var list_section = this.$el.children('section.indented');
       list_section.html(this.sublist.render().$el);
     }
     return this;

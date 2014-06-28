@@ -1,9 +1,9 @@
-Workflowy.Views.IndexView = Backbone.View.extend({
+Workflowy.Views.Index = Backbone.View.extend({
 
   template: JST['items/index'],
 
   initialize: function() {
-    this.sublist = new Workflowy.Views.ListView({collection: this.collection});
+    this.sublist = new Workflowy.Views.List({collection: this.collection});
 
     this.listenTo(this.collection, 'add remove sort', this.render);
   },

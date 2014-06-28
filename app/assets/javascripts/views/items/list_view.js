@@ -1,11 +1,11 @@
-Workflowy.Views.ListView = Backbone.View.extend({
+Workflowy.Views.List = Backbone.View.extend({
   tagName: 'ul',
 
   initialize: function() {
     this.$el.addClass('list');
 
     this.itemViews = this.collection.map(function(item) {
-      return new Workflowy.Views.ItemView({model: item});
+      return new Workflowy.Views.Item({model: item});
     });
 
     this.listenTo(this.collection, 'add remove sort', this.render);

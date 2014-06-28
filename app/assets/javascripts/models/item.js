@@ -17,8 +17,8 @@ Workflowy.Models.Item = Backbone.Model.extend({
 
   initialize: function(options) {
     this.parent = options.parent;
-    Workflowy.fragment_lookup[this.get('uuid')] = this;
-    Workflowy.id_lookup[this.id] = this;
+    Workflowy.lookup.fragment[this.get('uuid')] = this;
+    Workflowy.lookup.id[this.id] = this;
   },
 
   toJSON: function(options) {
@@ -26,25 +26,27 @@ Workflowy.Models.Item = Backbone.Model.extend({
   },
 
   shortenedNotes: function() {
-    (this.notes || '') && this.notes.split(/\r?\n/, 1)[0]
+    return (this.notes || '') && this.notes.split(/\r?\n/, 1)[0];
   },
 
   aTag: function() {
-    return '<a href="#' + this.get('uuid') + '">' + this.escape('title') + '</a>';
+    var uuid = this.get('uuid');
+    var title = this.escape('title');
+
+    return '<a href="#' + uuid + '">' + title + '</a>';
   },
 
   // do not record this into undoable actions or mark the document as unsaved
   toggleCollapsed: function() {
-    console.log('collapsing', this.get('collapsed'), this.id);
     this.set('collapsed', !this.get('collapsed'))
+
     $.ajax({
       url: this.url() + '/collapse',
       type: 'patch',
+
       success: function(response) {
-        console.log('collapsed', response)
         this.set('collapsed', response.collapsed);
-      }.bind(this),
-      error: function(response) { console.log(response) }
+      }.bind(this)
     });
   }
 });

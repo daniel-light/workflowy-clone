@@ -9,13 +9,13 @@ Workflowy.Routers.Router = Backbone.Router.extend({
   },
 
   index: function() {
-    var view = new Workflowy.Views.IndexView({collection: Workflowy.items});
+    var view = new Workflowy.Views.Index({collection: Workflowy.items});
     this._swapView(view);
   },
 
   show: function(uuid) {
-    var item = Workflowy.fragment_lookup[uuid];
-    var view = new Workflowy.Views.ShowView({model: item});
+    var item = Workflowy.lookup.fragment[uuid];
+    var view = new Workflowy.Views.Show({model: item});
     this._swapView(view);
   },
 

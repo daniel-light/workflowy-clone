@@ -1,13 +1,10 @@
-Workflowy.Views.ShowView = Backbone.View.extend({
-
+Workflowy.Views.Show = Backbone.View.extend({
   template: JST['items/show'],
 
   initialize: function() {
-    this.sublist = new Workflowy.Views.ListView({
+    this.sublist = new Workflowy.Views.List({
       collection: this.model.children()
     });
-    this.breadcrumbs = this._generateBreadcrumbs(this.model);
-
 
     this.listenTo(this.model, 'change', this.render);
   },
@@ -15,7 +12,7 @@ Workflowy.Views.ShowView = Backbone.View.extend({
   render: function() {
     var html = this.template({
       item: this.model,
-      breadcrumbs: this.breadcrumbs
+      breadcrumbs: this.breadcrumbs()
     });
 
     this.$el.html(html);
@@ -29,12 +26,12 @@ Workflowy.Views.ShowView = Backbone.View.extend({
     return Backbone.View.prototype.remove.apply(this, arguments);
   },
 
-  _generateBreadcrumbs: function(item) {
+  breadcrumbs: function() {
     var breadcrumbs = [];
+    var item = this.model;
 
     while (item) {
-      console.log(breadcrumbs)
-      item = Workflowy.id_lookup[item.get('parent_id')];
+      item = Workflowy.lookup.id[item.get('parent_id')];
       if (item) {
         breadcrumbs.unshift(item.aTag());
       } else {
