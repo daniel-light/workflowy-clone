@@ -4,6 +4,8 @@ Workflowy.Views.IndexView = Backbone.View.extend({
 
   initialize: function() {
     this.sublist = new Workflowy.Views.ListView({collection: this.collection});
+
+    this.listenTo(this.collection, 'add remove sort', this.render);
   },
 
   render: function() {

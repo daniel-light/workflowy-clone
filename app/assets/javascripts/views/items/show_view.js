@@ -7,7 +7,9 @@ Workflowy.Views.ShowView = Backbone.View.extend({
       collection: this.model.children()
     });
     this.breadcrumbs = this._generateBreadcrumbs(this.model);
-    window.test = this;
+
+
+    this.listenTo(this.model, 'change', this.render);
   },
 
   render: function() {
@@ -32,7 +34,7 @@ Workflowy.Views.ShowView = Backbone.View.extend({
 
     while (item) {
       console.log(breadcrumbs)
-      item = Workflowy.item_id[item.get('parent_id')];
+      item = Workflowy.id_lookup[item.get('parent_id')];
       if (item) {
         breadcrumbs.unshift(item.aTag());
       } else {

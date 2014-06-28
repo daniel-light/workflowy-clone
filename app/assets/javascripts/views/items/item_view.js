@@ -9,6 +9,8 @@ Workflowy.Views.ItemView = Backbone.View.extend({
     this.sublist = new Workflowy.Views.ListView({
       collection: this.model.children()
     });
+
+    this.listenTo(this.model, 'change', this.render);
   },
 
   render: function() {

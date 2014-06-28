@@ -15,8 +15,8 @@ Workflowy.Models.Item = Backbone.Model.extend({
 
   initialize: function(options) {
     this.parent = options.parent;
-    Workflowy.item_lookup[this.get('uuid')] = this;
-    Workflowy.item_id[this.id] = this;
+    Workflowy.fragment_lookup[this.get('uuid')] = this;
+    Workflowy.id_lookup[this.id] = this;
   },
 
   shortenedNotes: function() {
