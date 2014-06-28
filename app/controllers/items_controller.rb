@@ -35,7 +35,9 @@ class ItemsController < ApplicationController
     view ||= @item.views.new(user_id: current_user.id)
     view.toggle_collapsed!
 
-    if params[:return_id] && !params[:return_id].empty?
+    if request.xhr?
+      render json: {collapsed: view.collapsed}
+    elsif params[:return_id] && !params[:return_id].empty?
       redirect_to item_url(params[:return_id])
     else
       redirect_to items_url

@@ -12,7 +12,7 @@ Workflowy.Views.ListView = Backbone.View.extend({
   },
 
   render: function() {
-    this.$el.html('');
+    this.$el.children().detach();
 
     this.itemViews.forEach(function(itemView) {
       this.$el.append(itemView.render().$el);

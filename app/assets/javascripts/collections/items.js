@@ -1,5 +1,5 @@
 Workflowy.Collections.Items = Backbone.Collection.extend({
-  urlRoot: '/items',
+  url: '/items',
   model: Workflowy.Models.Item,
   comparator: 'rank'
 });

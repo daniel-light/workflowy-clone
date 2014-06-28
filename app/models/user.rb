@@ -65,7 +65,7 @@ class User < ActiveRecord::Base
       .includes([:shares, :views]) # we are deprecating views here, at the least
       .joins('LEFT OUTER JOIN views ON items.id = views.item_id')
       .where('views.user_id IS NULL OR views.user_id = ?', id)
-      .select('items.*, views.collapsed AS collapsed, views.id AS view_id')
+      .select('items.*, views.collapsed AS collapsed')
       .order(:rank)
     .each do |item|
       @better_hash[item.id][:item] = item
