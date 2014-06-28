@@ -1,12 +1,12 @@
-<a class="collapser">
-  <%= item.get('collapsed') ? '+' : '-' %>
+<a class="collapser <%= item.get('collapsed') ? 'collapsed' : 'expanded' %>">
+
 </a>
-<a class="bullet" href="#<%= item.get('uuid') %>"></a>
+<a class="bullet" href="#<%= item.get('uuid') %>">
+  <div><div></div></div>
+</a>
 
-<%= item.escape('title') %>
-<%= item.shortenedNotes() %>
+<p class="title"><%= item.escape('title') %></p>
+<p class="notes"><%= item.shortenedNotes() %></p>
 
-<% if (!item.get('collapsed')) { %>
-  <section class="indented">
-  </section>
-<% } %>
+<section class="indented">
+</section>
