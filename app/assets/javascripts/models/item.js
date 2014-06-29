@@ -3,6 +3,11 @@ Workflowy.Models.Item = Backbone.Model.extend({
     return '/items/' + this.get('uuid');
   },
 
+  initialize: function() {
+    this.listenTo(this, 'change', this.updateChangeTime);
+    this.listenTo(this, 'sync', this.updateSyncTime);
+  },
+
   children: function() {
     if (!this._children) {
       this._children =  new Workflowy.Collections.Items({parent: this});
@@ -21,6 +26,18 @@ Workflowy.Models.Item = Backbone.Model.extend({
 
   toJSON: function(options) {
     return _.omit(this, 'collapsed');
+  },
+
+  updateChangeTime: function() {
+    this._changeTime = new Date();
+    Workflowy.unsavedItems.add(this);
+  },
+
+  updateSyncTime: function() {
+    this._syncTime = new Date();
+    if (this._syncTime.getTime() > this._changeTime.getTime()) {
+      Workflowy.unsavedItems.remove(this);
+    }
   },
 
   shortenedNotes: function() {
@@ -58,12 +75,11 @@ Workflowy.Models.Item = Backbone.Model.extend({
 
   title: function(value) {
     if (value !== null && value != this.get('title')) {
-      //TODO set undoable and unsaved
+      this.updateChangeTime();
       this.save({title: value}, {
         silent: true,
         patch: true,
         success: function() {
-          //TODO clear saved
         },
         error: function() {
           //TODO flash an error message
@@ -75,12 +91,11 @@ Workflowy.Models.Item = Backbone.Model.extend({
 
   notes: function(value) {
     if (value !== undefined && value != this.get('notes')) {
-      //TODO set undoable and unsaved
+      this.updateChangeTime();
       this.save({notes: value}, {
         silent: true,
         patch: true,
         success: function() {
-          //TODO clear saved
         },
         error: function() {
           //TODO flash an error message
