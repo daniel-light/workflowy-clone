@@ -9,6 +9,9 @@ window.Workflowy = {
     var items = JSON.parse($('#bootstrapped_items_json').html()).items;
     Workflowy.items = new Workflowy.Collections.Items(items, {parse: true});
 
+    savedView = new Workflowy.Views.Saved();
+    $('.saved').replaceWith(savedView.render().$el);
+
     new Workflowy.Routers.Router({$rootEl: $('#content')});
     Backbone.history.start();
   }

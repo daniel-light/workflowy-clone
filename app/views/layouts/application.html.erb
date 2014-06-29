@@ -13,17 +13,17 @@
   <nav class="clear-group">
     <h1><%= link_to 'Workflowy Clone', root_url %></h1>
     <ul>
-      <li class="user-dropdown"><div></div>
-        <ul>
-          <% if signed_in? %>
+      <% if signed_in? %>
+        <li class="saved"></li>
+        <li class="user-dropdown"><div></div>
+          <ul>
             <li><%= button_to 'Sign Out', session_url, method: :delete %></li>
             <li class="user-email"><%= current_user.email %></li>
-          <% else %>
-            <li><%= render 'sessions/form' %></li>
-            <li><%= link_to 'Sign Up', new_user_url %></li>
-          <% end %>
-        </ul>
-      </li>
+          </ul>
+        </li>
+      <% else %>
+          <li><%= render 'sessions/form' %></li>
+      <% end %>
     </ul>
   </nav>
 </section>
