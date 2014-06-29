@@ -1,5 +1,5 @@
 class Item < ActiveRecord::Base
-  validates :user_id, :title, :rank, :uuid, presence: true
+  validates :user_id, :rank, :uuid, presence: true
   validates :rank, uniqueness: {scope: [:parent_id, :user_id]}
   validates :uuid, length: {is: 36}, uniqueness: true
 

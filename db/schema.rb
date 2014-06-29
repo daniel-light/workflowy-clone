@@ -11,20 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140627041832) do
+ActiveRecord::Schema.define(version: 20140629233057) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "items", force: true do |t|
-    t.integer  "user_id"
+    t.integer  "user_id",    null: false
     t.integer  "parent_id"
     t.integer  "rank"
-    t.text     "title"
+    t.string   "title"
     t.text     "notes"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "uuid",       limit: 36, null: false
+    t.string   "uuid",       null: false
   end
 
   add_index "items", ["user_id", "parent_id", "rank"], name: "index_items_on_user_id_and_parent_id_and_rank", unique: true, using: :btree

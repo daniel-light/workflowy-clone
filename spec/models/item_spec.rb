@@ -3,22 +3,20 @@ require 'rails_helper'
 RSpec.describe Item, :type => :model do
 
   context 'validations' do
-    it 'validates when given a user_id, title and rank' do
+    it 'validates when given a user_id and rank' do
       expect(create(:item)).to be_valid
     end
 
     it { should validate_presence_of(:user_id) }
-
-    it { should validate_presence_of(:title) }
 
     it { should validate_presence_of(:rank) }
     it { should validate_uniqueness_of(:rank).scoped_to(:parent_id) }
 
     it 'can have the same rank as another item with a different parent' do
       parent = create(:item)
-      first_child = parent.children.create(title: 'first', user_id: 1, rank: 1)
+      first_child = parent.children.create(user_id: 1, rank: 1)
       second_parent = create(:item)
-      second_child = second_parent.children.create(title: 'first', user_id: 1, rank: 1)
+      second_child = second_parent.children.create(user_id: 1, rank: 1)
       expect(second_child).to be_valid
     end
 
