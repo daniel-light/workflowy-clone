@@ -1,5 +1,9 @@
 Workflowy.Collections.Items = Backbone.Collection.extend({
   url: '/items',
   model: Workflowy.Models.Item,
-  comparator: 'rank'
+  comparator: 'rank',
+
+  initialize: function(options) {
+    this.parent = options.parent;
+  }
 });

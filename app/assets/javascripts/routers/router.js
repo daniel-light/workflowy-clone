@@ -14,7 +14,7 @@ Workflowy.Routers.Router = Backbone.Router.extend({
   },
 
   show: function(uuid) {
-    var item = Workflowy.lookup.fragment[uuid];
+    var item = Workflowy.flatItems.findWhere({uuid: uuid});
     var view = new Workflowy.Views.Show({model: item});
     this._swapView(view);
   },

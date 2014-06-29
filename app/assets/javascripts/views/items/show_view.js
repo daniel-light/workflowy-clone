@@ -36,7 +36,8 @@ Workflowy.Views.Show = Backbone.View.extend({
     var item = this.model;
 
     while (item) {
-      item = Workflowy.lookup.id[item.get('parent_id')];
+      //item = Workflowy.lookup.id[item.get('parent_id')];
+      item = item.collection.parent;
       if (item) {
         breadcrumbs.unshift(item.aTag());
       } else {

@@ -4,7 +4,7 @@ window.Workflowy = {
   Views: {},
   Routers: {},
   initialize: function() {
-    Workflowy.lookup = {id: {}, fragment: {}};
+    Workflowy.flatItems = new Workflowy.Collections.Items({comparator: 'uuid'});
 
     var items = JSON.parse($('#bootstrapped_items_json').html()).items;
     Workflowy.items = new Workflowy.Collections.Items(items, {parse: true});

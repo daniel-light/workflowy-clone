@@ -4,21 +4,19 @@ Workflowy.Models.Item = Backbone.Model.extend({
   },
 
   children: function() {
-    return this._children = this._children || new Workflowy.Collections.Items;
+    if (!this._children) {
+      this._children =  new Workflowy.Collections.Items({parent: this});
+    }
+    return this._children;
   },
 
   parse: function(response) {
+    Workflowy.flatItems.add(this);
     this.children().set(
       response.children,
       {parse: true}
     );
     return response.item;
-  },
-
-  initialize: function(options) {
-    this.parent = options.parent;
-    Workflowy.lookup.fragment[this.get('uuid')] = this;
-    Workflowy.lookup.id[this.id] = this;
   },
 
   toJSON: function(options) {
