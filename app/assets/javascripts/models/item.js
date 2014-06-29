@@ -51,7 +51,7 @@ Workflowy.Models.Item = Backbone.Model.extend({
     var notes = this.escape('notes') || '';
     var lines = notes.split(/\r?\n/, 1);
 
-    if (lines.length > 1) {
+    if (lines.length < notes.length) {
       return lines[0] + '...';
     } else {
       return lines[0];
