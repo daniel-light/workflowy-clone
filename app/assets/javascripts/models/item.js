@@ -30,14 +30,21 @@ Workflowy.Models.Item = Backbone.Model.extend({
 
   updateChangeTime: function() {
     this._changeTime = new Date();
-    Workflowy.unsavedItems.add(this);
   },
 
   updateSyncTime: function() {
     this._syncTime = new Date();
-    if (this._syncTime.getTime() > this._changeTime.getTime()) {
-      Workflowy.unsavedItems.remove(this);
+  },
+
+  persisted: function() {
+    if (this.isNew()) {
+      return false;
+    } else if (this._changeTime === undefined) {
+      return true;
+    } else if (this._syncTime === undefined) {
+      return false;
     }
+    return this._syncTime.getTime() >= this._changeTime.getTime();
   },
 
   shortenedNotes: function() {
@@ -75,9 +82,7 @@ Workflowy.Models.Item = Backbone.Model.extend({
 
   title: function(value) {
     if (value !== null && value != this.get('title')) {
-      this.updateChangeTime();
       this.save({title: value}, {
-        silent: true,
         patch: true,
         success: function() {
         },
@@ -91,9 +96,7 @@ Workflowy.Models.Item = Backbone.Model.extend({
 
   notes: function(value) {
     if (value !== undefined && value != this.get('notes')) {
-      this.updateChangeTime();
       this.save({notes: value}, {
-        silent: true,
         patch: true,
         success: function() {
         },

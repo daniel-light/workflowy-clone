@@ -22,6 +22,11 @@ Workflowy.Views.Item = Backbone.View.extend({
   },
 
   render: function() {
+    // don't interrupt the user
+    if (this.isBeingEdited()) {
+      return this;
+    }
+
     this.$el.find('li.item').detach();
     this.$el.html(this.template({item: this.model}));
 
@@ -35,6 +40,10 @@ Workflowy.Views.Item = Backbone.View.extend({
   remove: function() {
     this.sublist.remove();
     return Backbone.View.prototype.remove.apply(this, arguments);
+  },
+
+  isBeingEdited: function() {
+    return this.$el.children('p:focus').length > 0;
   },
 
   toggleCollapsed: function() {
