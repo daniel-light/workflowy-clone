@@ -45,7 +45,7 @@ Workflowy.Models.Item = Backbone.Model.extend({
 
   // do not record this into undoable actions or mark the document as unsaved
   toggleCollapsed: function() {
-    this.children().length === 0 &&& return;
+    if (this.children().isEmpty()) return;
     this.set('collapsed', !this.get('collapsed'))
 
     $.ajax({

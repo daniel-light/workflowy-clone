@@ -46,6 +46,11 @@ Workflowy.Views.Item = Backbone.View.extend({
     this.model.title($(event.currentTarget).text());
   },
 
+  changeNotes: function(event) {
+    event.stopPropagation();
+    this.model.notes(event.currentTarget.innerText); //TODO firefox support
+  },
+
   expandNotes: function(event) {
     event.stopPropagation();
     event.currentTarget.innerHTML = this.model.escape('notes');
@@ -54,10 +59,5 @@ Workflowy.Views.Item = Backbone.View.extend({
   collapseNotes: function(event) {
     event.stopPropagation();
     event.currentTarget.innerHTML = this.model.shortenedNotes();
-  },
-
-  changeNotes: function(event) {
-    event.stopPropagation();
-    this.model.notes(event.currentTarget.innerText); //TODO firefox support
   }
 });

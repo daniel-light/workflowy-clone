@@ -9,6 +9,11 @@ Workflowy.Views.Show = Backbone.View.extend({
     this.listenTo(this.model, 'change', this.render);
   },
 
+  events: {
+    'input .title': 'changeTitle',
+    'input .notes': 'changeNotes'
+  },
+
   render: function() {
     var html = this.template({
       item: this.model,
@@ -40,5 +45,15 @@ Workflowy.Views.Show = Backbone.View.extend({
     }
 
     return breadcrumbs.join(' > ');
+  },
+
+  changeTitle: function(event) {
+    event.stopPropagation();
+    this.model.title($(event.currentTarget).text());
+  },
+
+  changeNotes: function(event) {
+    event.stopPropagation();
+    this.model.notes(event.currentTarget.innerText); //TODO firefox support
   }
 });
