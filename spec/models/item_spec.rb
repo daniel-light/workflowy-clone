@@ -10,7 +10,12 @@ RSpec.describe Item, :type => :model do
     it { should validate_presence_of(:user_id) }
 
     it { should validate_presence_of(:rank) }
-    it { should validate_uniqueness_of(:rank).scoped_to(:parent_id) }
+
+    it do
+      create(:item)
+
+      should validate_uniqueness_of(:rank).scoped_to(:parent_id)
+    end
 
     it 'can have the same rank as another item with a different parent' do
       parent = create(:item)
@@ -27,6 +32,22 @@ RSpec.describe Item, :type => :model do
       item = build(:item, uuid: nil)
       item.valid?
       expect(item.uuid.length).to eq(36)
+    end
+
+    it 'should automatically set a blank title' do
+      item = build(:item, title: nil)
+
+      item.valid?
+
+      expect(item.title).to eq('')
+    end
+
+    it 'should automatically set blank notes' do
+      item = build(:item, notes: nil)
+
+      item.valid?
+
+      expect(item.notes).to eq('')
     end
   end
 
