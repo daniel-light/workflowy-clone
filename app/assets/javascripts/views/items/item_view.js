@@ -100,7 +100,8 @@ Workflowy.Views.Item = Backbone.View.extend({
     var index = this.model.collection.indexOf(this.model);
     this.model.collection.create({
       parent_id: this.model && this.model.parent_id,
-      rank: this.model.collection.rankForPosition(index + 1)
+      rank: this.model.collection.rankForPosition(index + 1),
+      uuid: Workflowy.generateUUID();
     }, {
       success: function(item, attributes) {
         item.set(attributes, {parse: true});

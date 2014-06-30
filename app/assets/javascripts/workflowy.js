@@ -16,7 +16,7 @@ window.Workflowy = {
     Backbone.history.start();
   },
 
-  randomUUID: function() {
+  generateUUID: function() {
     var template = "xxxxxxxx-xxxx-yxxx-yxxx-xxxxxxxxxxxx";
 
     var uuid = template.replace(/x/g, function() {

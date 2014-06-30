@@ -73,7 +73,7 @@ class ItemsController < ApplicationController
   private
 
   def item_params
-    params.require(:item).permit(:title, :notes, :rank)
+    params.require(:item).permit(:title, :notes, :rank, :uuid)
   end
 
   def require_owner
