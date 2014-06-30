@@ -16,6 +16,7 @@ Workflowy.Views.List = Backbone.View.extend({
     this.$el.children().detach();
 
     this.collection.forEach(function(item) {
+      item.view.delegateEvents();
       this.$el.append(item.view.render().$el);
     }.bind(this));
 
