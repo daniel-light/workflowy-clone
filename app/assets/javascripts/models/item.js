@@ -1,7 +1,7 @@
 Workflowy.Models.Item = Backbone.Model.extend({
   url: function() {
     if (this.isNew()) {
-      if (this.collection.parent) {
+      if (this.collection && this.collection.parent) {
         return this.collection.parent.url();
       } else {
         return '/items';

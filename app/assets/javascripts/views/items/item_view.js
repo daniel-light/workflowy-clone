@@ -98,17 +98,12 @@ Workflowy.Views.Item = Backbone.View.extend({
 
     event.preventDefault();
     var index = this.model.collection.indexOf(this.model);
-    this.model.collection.create({
+
+    var newItem = new Workflowy.Models.Item({
       parent_id: this.model && this.model.parent_id,
-      rank: this.model.collection.rankForPosition(index + 1),
-      uuid: Workflowy.generateUUID();
-    }, {
-      success: function(item, attributes) {
-        item.set(attributes, {parse: true});
-      },
-      error: function() {
-        console.log(arguments);
-      }
+      uuid: Workflowy.generateUUID()
     });
+
+    this.model.collection.insertAt(newItem, index + 1);
   }
 });
