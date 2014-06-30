@@ -14,6 +14,21 @@ window.Workflowy = {
 
     new Workflowy.Routers.Router({$rootEl: $('#content')});
     Backbone.history.start();
+  },
+
+  randomUUID: function() {
+    var template = "xxxxxxxx-xxxx-yxxx-yxxx-xxxxxxxxxxxx";
+
+    var uuid = template.replace(/x/g, function() {
+      return Math.floor(Math.random() * 16).toString(16);
+    });
+
+    // set the weird bit
+    uuid = uuid.replace('y', function() {
+      return ['8', '9', 'a', 'b'][Math.floor(Math.random() * 4)];
+    });
+
+    return uuid;
   }
 };
 
