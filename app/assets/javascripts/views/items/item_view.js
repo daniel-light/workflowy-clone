@@ -10,6 +10,7 @@ Workflowy.Views.Item = Backbone.View.extend({
       collection: this.model.children()
     });
 
+    this.bindShortcuts();
     this.listenTo(this.model, 'change', this.render);
   },
 
@@ -18,7 +19,9 @@ Workflowy.Views.Item = Backbone.View.extend({
     'input .title': 'changeTitle',
     'focus .notes': 'expandNotes',
     'blur .notes': 'collapseNotes',
-    'input .notes': 'changeNotes'
+    'input .notes': 'changeNotes',
+    'focus p': 'activateShortcuts',
+    'blur p': 'disableShortcuts'
   },
 
   render: function() {
@@ -42,8 +45,13 @@ Workflowy.Views.Item = Backbone.View.extend({
     return Backbone.View.prototype.remove.apply(this, arguments);
   },
 
-  isBeingEdited: function() {
-    return this.$el.children('p:focus').length > 0;
+  isBeingEdited: function(input) {
+    if (input) {
+      input = '.' + input;
+    } else {
+      input = '';
+    }
+    return this.$el.children('p' + input + ':focus').length > 0;
   },
 
   toggleCollapsed: function() {
@@ -68,5 +76,27 @@ Workflowy.Views.Item = Backbone.View.extend({
   collapseNotes: function(event) {
     event.stopPropagation();
     event.currentTarget.innerHTML = this.model.shortenedNotes();
+  },
+
+  activateShortcuts: function(event) {
+    event.stopPropagation();
+    console.log('active', this.model.title())
+    key.setScope(this.model.get('uuid'));
+  },
+
+  disableShortcuts: function(event) {
+    event.stopPropagation();
+    console.log('disactive')
+    key.setScope('all');
+  },
+
+  bindShortcuts: function() {
+    key('return', this.model.get('uuid'), this.shortcutNewItem.bind(this));
+  },
+
+  shortcutNewItem: function(event, handler) {
+    if (!this.isBeingEdited('title')) return;
+
+    event.preventDefault();
   }
 });

@@ -75,13 +75,14 @@ Workflowy.Models.Item = Backbone.Model.extend({
       type: 'patch',
 
       success: function(response) {
+        window.response = response;
         this.set('collapsed', response.collapsed);
       }.bind(this)
     });
   },
 
   title: function(value) {
-    if (value !== null && value != this.get('title')) {
+    if (value !== undefined && value != this.get('title')) {
       this.save({title: value}, {
         patch: true,
         success: function() {
