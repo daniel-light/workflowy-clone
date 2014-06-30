@@ -1,5 +1,12 @@
 Workflowy.Models.Item = Backbone.Model.extend({
   url: function() {
+    if (this.isNew()) {
+      if (this.collection.parent) {
+        return this.collection.parent.url();
+      } else {
+        return '/items';
+      }
+    }
     return '/items/' + this.get('uuid');
   },
 
@@ -10,7 +17,7 @@ Workflowy.Models.Item = Backbone.Model.extend({
 
   children: function() {
     if (!this._children) {
-      this._children =  new Workflowy.Collections.Items({parent: this});
+      this._children =  new Workflowy.Collections.Items([], {parent: this});
     }
     return this._children;
   },
@@ -25,7 +32,7 @@ Workflowy.Models.Item = Backbone.Model.extend({
   },
 
   toJSON: function(options) {
-    return _.omit(this, 'collapsed');
+    return _.omit(this.attributes, 'collapsed');
   },
 
   updateChangeTime: function() {

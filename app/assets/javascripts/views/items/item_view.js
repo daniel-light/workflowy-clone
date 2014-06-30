@@ -80,13 +80,11 @@ Workflowy.Views.Item = Backbone.View.extend({
 
   activateShortcuts: function(event) {
     event.stopPropagation();
-    console.log('active', this.model.title())
     key.setScope(this.model.get('uuid'));
   },
 
   disableShortcuts: function(event) {
     event.stopPropagation();
-    console.log('disactive')
     key.setScope('all');
   },
 
@@ -98,5 +96,10 @@ Workflowy.Views.Item = Backbone.View.extend({
     if (!this.isBeingEdited('title')) return;
 
     event.preventDefault();
+    var index = this.model.collection.indexOf(this.model);
+    this.model.collection.create({
+      parent_id: this.model.collection.parent.id,
+      rank: this.model.collection.rankForPosition(index + 1)
+    });
   }
 });
