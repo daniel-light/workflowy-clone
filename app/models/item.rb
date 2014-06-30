@@ -24,6 +24,15 @@ class Item < ActiveRecord::Base
   extend FriendlyId
   friendly_id :uuid
 
+  def self.rerank(ranks_hash)
+    transaction do
+      connection.execute 'SET CONSTRAINTS items_rank DEFERRED'
+      ranks_hash.keys.each do |id|
+        update(id, rank: ranks_hash[id])
+      end
+    end
+  end
+
   def shortened_notes
     ''
   end

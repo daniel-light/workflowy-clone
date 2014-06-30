@@ -1,6 +1,6 @@
 class ItemsController < ApplicationController
   before_action :require_signed_in
-  before_action :require_owner, except: [:index, :create]
+  before_action :require_owner, except: [:index, :create, :rerank]
 
   def index
     @nested_items = current_user.nested_items
@@ -68,6 +68,14 @@ class ItemsController < ApplicationController
   def destroy
     @item.destroy
     redirect_to items_url
+  end
+
+  def rerank
+    if Item.rerank(params[:ranks])
+      render json: 'ok'
+    else
+      render status: 400
+    end
   end
 
   private

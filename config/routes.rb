@@ -6,9 +6,11 @@ Rails.application.routes.draw do
   resources :users, only: [:new, :create]
 
   resources :items, except: [:new, :edit], shallow: true do
+    patch :rerank, on: :collection
     member do
       post action: :create
       patch :collapse
+      patch :rerank
     end
 
     resources :shares, only: [:index, :create]
