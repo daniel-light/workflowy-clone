@@ -4,34 +4,33 @@ Workflowy.Views.List = Backbone.View.extend({
   initialize: function() {
     this.$el.addClass('list');
 
-    this.itemViews = this.collection.map(function(item) {
-      return new Workflowy.Views.Item({model: item});
+    this.collection.forEach(function(item) {
+      item.view = new Workflowy.Views.Item({model: item});
     });
 
     this.listenTo(this.collection, 'remove sort', this.render);
-    this.listenTo(this.collection, 'add', this.addNewItem);
+    this.listenTo(this.collection, 'add', this.addNewItemView);
   },
 
   render: function() {
     this.$el.children().detach();
 
-    this.itemViews.forEach(function(itemView) {
-      this.$el.append(itemView.render().$el);
+    this.collection.forEach(function(item) {
+      this.$el.append(item.view.render().$el);
     }.bind(this));
 
     return this;
   },
 
   remove: function() {
-    this.itemViews.forEach(function(itemView) {
-      itemView.remove();
+    this.collection.forEach(function(item) {
+      item.view.remove();
     });
     return Backbone.View.prototype.remove.apply(this, arguments);
   },
 
-  addNewItem: function(item) {
-    var newItemView = new Workflowy.Views.Item({model: item});
-    this.itemViews.push(newItemView);
-    this.$el.append(newItemView.render().$el);
+  addNewItemView: function(item) {
+    item.view = new Workflowy.Views.Item({model: item});
+    this.render();
   }
 });

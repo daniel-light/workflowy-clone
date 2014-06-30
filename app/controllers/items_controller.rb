@@ -22,11 +22,19 @@ class ItemsController < ApplicationController
     @new_item = (@item ? @item.children : current_user.items).new(item_params)
     @new_item.rank ||= max_rank(nested_children(@item)) + 100
 
-    if @new_item.save
-      redirect_to @item ? item_url(@item) : items_url
+    if request.xhr?
+      if @new_item.save
+        render json: @new_item
+      else
+        render status: 400, json: @new_item.errors
+      end
     else
-      flash.now[:alert] = @new_item.errors.full_messages
-      render @item ? :show : :index
+      if @new_item.save
+        redirect_to @item ? item_url(@item) : items_url
+      else
+        flash.now[:alert] = @new_item.errors.full_messages
+        render @item ? :show : :index
+      end
     end
   end
 

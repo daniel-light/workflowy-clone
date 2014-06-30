@@ -12,6 +12,7 @@ Workflowy.Views.Item = Backbone.View.extend({
 
     this.bindShortcuts();
     this.listenTo(this.model, 'change', this.render);
+    this.listenTo(this.model, 'change:uuid', this.bindShortcuts);
   },
 
   events: {
@@ -55,6 +56,7 @@ Workflowy.Views.Item = Backbone.View.extend({
   },
 
   toggleCollapsed: function() {
+    event.stopPropagation();
     this.model.toggleCollapsed();
   },
 
@@ -89,6 +91,8 @@ Workflowy.Views.Item = Backbone.View.extend({
   },
 
   bindShortcuts: function() {
+    if (!this.model.get('uuid')) return;
+
     key('return', this.model.get('uuid'), this.shortcutNewItem.bind(this));
   },
 
@@ -98,8 +102,18 @@ Workflowy.Views.Item = Backbone.View.extend({
     event.preventDefault();
     var index = this.model.collection.indexOf(this.model);
     this.model.collection.create({
-      parent_id: this.model.collection.parent.id,
+      parent_id: this.model && this.model.parent_id,
       rank: this.model.collection.rankForPosition(index + 1)
+    }, {
+      success: function(item, attributes) {
+        item.set(attributes, {parse: true});
+        if (item.view) {
+          item.view.delegateEvents();
+        }
+      },
+      error: function() {
+        console.log(arguments);
+      }
     });
   }
 });
