@@ -27,10 +27,14 @@
 
     parse: function(response) {
       Workflowy.flatItems.add(this);
-      this.children().set(
-        response.children,
-        {parse: true}
-      );
+
+      if (response.children) {
+        this.children().set(
+          response.children,
+          {parse: true}
+        );
+      }
+
       return response.item;
     },
 

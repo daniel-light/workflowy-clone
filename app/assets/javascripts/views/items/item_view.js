@@ -28,9 +28,8 @@
     },
 
     render: function() {
-      // don't interrupt the user
       if (this.isBeingEdited()) {
-        return this;
+        var selection = this.getSelectedPosition();
       }
 
       this.$el.find('li.item').detach();
@@ -40,6 +39,11 @@
         var list_section = this.$el.children('section.indented');
         list_section.html(this.sublist.render().$el);
       }
+
+      if (selection) {
+        this.restoreSelectedPosition(selection);
+      }
+
       return this;
     },
 
@@ -117,6 +121,33 @@
       event.preventDefault();
 
       this.model.indent();
+    },
+
+    getSelectedPosition: function() {
+      var selection = {};
+      var range = window.getSelection().getRangeAt(0);
+
+      selection.edited = this.isBeingEdited('title') ? '.title' : '.notes';
+      selection.startOffset = range.startOffset;
+      selection.endOffset = range.endOffset;
+      console.log(range);
+      window.range = range;
+      window.container = selection.startContainer;
+
+      return selection;
+    },
+
+    restoreSelectedPosition: function(selection) {
+      var el = this.$el.children(selection.edited)[0];
+      el.focus();
+
+      var textNode = el.childNodes[0];
+      var range = document.createRange();
+      range.setStart(textNode, selection.startOffset);
+      range.setEnd(textNode, selection.endOffset);
+
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(range);
     }
   });
 })(Workflowy);
