@@ -1,40 +1,44 @@
-window.Workflowy = {
-  Models: {},
-  Collections: {},
-  Views: {},
-  Routers: {},
-  initialize: function() {
-    Workflowy.flatItems = new Workflowy.Collections.Items([], {comparator: 'uuid'});
+;(function() {
+  "use strict";
 
-    var items = JSON.parse($('#bootstrapped_items_json').html()).items;
-    Workflowy.items = new Workflowy.Collections.Items(items, {parse: true});
+  window.Workflowy = {
+    Models: {},
+    Collections: {},
+    Views: {},
+    Routers: {},
+    initialize: function() {
+      Workflowy.flatItems = new Workflowy.Collections.Items([], {comparator: 'uuid'});
 
-    var savedView = new Workflowy.Views.Saved({collection: Workflowy.flatItems});
-    $('.saved').replaceWith(savedView.render().$el);
+      var items = JSON.parse($('#bootstrapped_items_json').html()).items;
+      Workflowy.items = new Workflowy.Collections.Items(items, {parse: true});
 
-    window.undoView = new Workflowy.Views.Undo({collection: Workflowy.flatItems});
-    $('.dos').replaceWith(undoView.render().$el);
+      var savedView = new Workflowy.Views.Saved({collection: Workflowy.flatItems});
+      $('.saved').replaceWith(savedView.render().$el);
 
-    new Workflowy.Routers.Router({$rootEl: $('#content')});
-    Backbone.history.start();
-  },
+      var undoView = new Workflowy.Views.Undo({collection: Workflowy.flatItems});
+      $('.dos').replaceWith(undoView.render().$el);
 
-  generateUUID: function() {
-    var template = "xxxxxxxx-xxxx-yxxx-yxxx-xxxxxxxxxxxx";
+      new Workflowy.Routers.Router({$rootEl: $('#content')});
+      Backbone.history.start();
+    },
 
-    var uuid = template.replace(/x/g, function() {
-      return Math.floor(Math.random() * 16).toString(16);
-    });
+    generateUUID: function() {
+      var template = "xxxxxxxx-xxxx-yxxx-yxxx-xxxxxxxxxxxx";
 
-    // set the weird bit
-    uuid = uuid.replace('y', function() {
-      return ['8', '9', 'a', 'b'][Math.floor(Math.random() * 4)];
-    });
+      var uuid = template.replace(/x/g, function() {
+        return Math.floor(Math.random() * 16).toString(16);
+      });
 
-    return uuid;
-  }
-};
+      // set the weird bit
+      uuid = uuid.replace('y', function() {
+        return ['8', '9', 'a', 'b'][Math.floor(Math.random() * 4)];
+      });
 
-$(document).ready(function(){
-  Workflowy.initialize();
-});
+      return uuid;
+    }
+  };
+
+  $(document).ready(function(){
+    Workflowy.initialize();
+  });
+})()

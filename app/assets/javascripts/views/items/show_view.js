@@ -1,60 +1,64 @@
-Workflowy.Views.Show = Backbone.View.extend({
-  template: JST['items/show'],
+;(function(Workflowy) {
+  "use strict";
 
-  initialize: function() {
-    this.sublist = new Workflowy.Views.List({
-      collection: this.model.children()
-    });
+  Workflowy.Views.Show = Backbone.View.extend({
+    template: JST['items/show'],
 
-    this.listenTo(this.model, 'change', this.render);
-  },
+    initialize: function() {
+      this.sublist = new Workflowy.Views.List({
+        collection: this.model.children()
+      });
 
-  events: {
-    'input .title': 'changeTitle',
-    'input .notes': 'changeNotes'
-  },
+      this.listenTo(this.model, 'change', this.render);
+    },
 
-  render: function() {
-    var html = this.template({
-      item: this.model,
-      breadcrumbs: this.breadcrumbs()
-    });
+    events: {
+      'input .title': 'changeTitle',
+      'input .notes': 'changeNotes'
+    },
 
-    this.$el.html(html);
-    this.$el.find('article').html(this.sublist.render().$el);
+    render: function() {
+      var html = this.template({
+        item: this.model,
+        breadcrumbs: this.breadcrumbs()
+      });
 
-    return this;
-  },
+      this.$el.html(html);
+      this.$el.find('article').html(this.sublist.render().$el);
 
-  remove: function() {
-    this.sublist.remove();
-    return Backbone.View.prototype.remove.apply(this, arguments);
-  },
+      return this;
+    },
 
-  breadcrumbs: function() {
-    var breadcrumbs = [];
-    var item = this.model;
+    remove: function() {
+      this.sublist.remove();
+      return Backbone.View.prototype.remove.apply(this, arguments);
+    },
 
-    while (item) {
-      //item = Workflowy.lookup.id[item.get('parent_id')];
-      item = item.collection.parent;
-      if (item) {
-        breadcrumbs.unshift(item.aTag());
-      } else {
-        breadcrumbs.unshift('<a href="#">Home</a>');
+    breadcrumbs: function() {
+      var breadcrumbs = [];
+      var item = this.model;
+
+      while (item) {
+        //item = Workflowy.lookup.id[item.get('parent_id')];
+        item = item.collection.parent;
+        if (item) {
+          breadcrumbs.unshift(item.aTag());
+        } else {
+          breadcrumbs.unshift('<a href="#">Home</a>');
+        }
       }
+
+      return breadcrumbs.join(' > ');
+    },
+
+    changeTitle: function(event) {
+      event.stopPropagation();
+      this.model.title($(event.currentTarget).text());
+    },
+
+    changeNotes: function(event) {
+      event.stopPropagation();
+      this.model.notes(event.currentTarget.innerText); //TODO firefox support
     }
-
-    return breadcrumbs.join(' > ');
-  },
-
-  changeTitle: function(event) {
-    event.stopPropagation();
-    this.model.title($(event.currentTarget).text());
-  },
-
-  changeNotes: function(event) {
-    event.stopPropagation();
-    this.model.notes(event.currentTarget.innerText); //TODO firefox support
-  }
-});
+  });
+})(Workflowy);

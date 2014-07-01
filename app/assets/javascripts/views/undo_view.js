@@ -1,96 +1,100 @@
-Workflowy.Views.Undo = Backbone.View.extend({
-  tag: 'li',
+;(function(Workflowy) {
+  "use strict";
 
-  initialize: function() {
-    this._undos = [];
-    key('ctrl + z', 'all', this.undo.bind(this));
-    this._redos = [];
-    key('shift + ctrl + z', 'all', this.redo.bind(this));
+  Workflowy.Views.Undo = Backbone.View.extend({
+    tag: 'li',
 
-    this.listenTo(this.collection, 'change:title', this.recordTitleChange);
-    this.listenTo(this.collection, 'change:notes', this.recordNotesChange);
-    this.listenTo(this.collection, 'add', this.recordAdd);
-    this.listenTo(this.collection, 'remove', this.recordRemove);
-    this.listenTo(this.collection, 'destroy', this.recordDestroy);
-  },
+    initialize: function() {
+      this._undos = [];
+      key('ctrl + z', 'all', this.undo.bind(this));
+      this._redos = [];
+      key('shift + ctrl + z', 'all', this.redo.bind(this));
 
-  render: function() {
-    this.$el.html('<a class="undo">undo</a><a class="redo">redo</a>')
-    return this;
-  },
+      this.listenTo(this.collection, 'change:title', this.recordTitleChange);
+      this.listenTo(this.collection, 'change:notes', this.recordNotesChange);
+      this.listenTo(this.collection, 'add', this.recordAdd);
+      this.listenTo(this.collection, 'remove', this.recordRemove);
+      this.listenTo(this.collection, 'destroy', this.recordDestroy);
+    },
 
-  events: {
-    'click .undo': 'undo',
-    'click .redo': 'redo'
-  },
+    render: function() {
+      this.$el.html('<a class="undo">undo</a><a class="redo">redo</a>')
+      return this;
+    },
 
-  undo: function() {
-    if (this._undos.length === 0) return;
-    event.preventDefault();
+    events: {
+      'click .undo': 'undo',
+      'click .redo': 'redo'
+    },
 
-    action = this._undos.pop();
-    action.undo();
-    this._redos.push(action);
+    undo: function() {
+      if (this._undos.length === 0) return;
+      event.preventDefault();
 
-    if (this._redos.length === 1) {
-      this.$el.children('.redo').addClass('usable')
-    }
-    if (this._undos.length === 0) {
-      this.$el.children('.undo').removeClass('usable');
-    }
-  },
+      action = this._undos.pop();
+      action.undo();
+      this._redos.push(action);
 
-  redo: function() {
-    if (this._undos.length === 0) return;
-    event.preventDefault();
-
-    action = this._redos.pop();
-    action.redo();
-    this.pushUndo(action);
-
-    if (this._redos.length === 0) {
-      this.$el.children('.redo').removeClass('usable');
-    }
-  },
-
-  pushUndo: function(action) {
-    this._undos.push(action);
-    if (this._undos.length === 1) {
-      this.$el.children('.undo').addClass('usable');
-    }
-  },
-
-  recordTitleChange: function(item, title, options) {
-    if (options.undoIgnore) return;
-
-    var action = {
-      _previous: item.previous('title'),
-      _current: item.get('title'),
-      _time: new Date(),
-
-      undo: function() {
-        item.set('title', this._previous, {undoIgnore: true});
-        item.save();
-      },
-
-      redo: function() {
-        item.set('title', this._current, {undoIgnore: true});
-        item.save();
+      if (this._redos.length === 1) {
+        this.$el.children('.redo').addClass('usable')
       }
-    };
+      if (this._undos.length === 0) {
+        this.$el.children('.undo').removeClass('usable');
+      }
+    },
 
-    this.pushUndo(action);
-  },
+    redo: function() {
+      if (this._undos.length === 0) return;
+      event.preventDefault();
 
-  recordNotesChange: function(item, notes, options) {
-  },
+      action = this._redos.pop();
+      action.redo();
+      this.pushUndo(action);
 
-  recordAdd: function(item, list, options) {
-  },
+      if (this._redos.length === 0) {
+        this.$el.children('.redo').removeClass('usable');
+      }
+    },
 
-  recordRemove: function(item, list, options) {
-  },
+    pushUndo: function(action) {
+      this._undos.push(action);
+      if (this._undos.length === 1) {
+        this.$el.children('.undo').addClass('usable');
+      }
+    },
 
-  recordDestroy: function(item, list, options) {
-  }
-});
+    recordTitleChange: function(item, title, options) {
+      if (options.undoIgnore) return;
+
+      var action = {
+        _previous: item.previous('title'),
+        _current: item.get('title'),
+        _time: new Date(),
+
+        undo: function() {
+          item.set('title', this._previous, {undoIgnore: true});
+          item.save();
+        },
+
+        redo: function() {
+          item.set('title', this._current, {undoIgnore: true});
+          item.save();
+        }
+      };
+
+      this.pushUndo(action);
+    },
+
+    recordNotesChange: function(item, notes, options) {
+    },
+
+    recordAdd: function(item, list, options) {
+    },
+
+    recordRemove: function(item, list, options) {
+    },
+
+    recordDestroy: function(item, list, options) {
+    }
+  });
+})(Workflowy);

@@ -1,27 +1,31 @@
-Workflowy.Routers.Router = Backbone.Router.extend({
-  routes: {
-    '': 'index',
-    ':uuid': 'show'
-  },
+;(function(Workflowy) {
+  "use strict";
 
-  initialize: function(options) {
-    this.$rootEl = options.$rootEl;
-  },
+  Workflowy.Routers.Router = Backbone.Router.extend({
+    routes: {
+      '': 'index',
+      ':uuid': 'show'
+    },
 
-  index: function() {
-    var view = new Workflowy.Views.Index({collection: Workflowy.items});
-    this._swapView(view);
-  },
+    initialize: function(options) {
+      this.$rootEl = options.$rootEl;
+    },
 
-  show: function(uuid) {
-    var item = Workflowy.flatItems.findWhere({uuid: uuid});
-    var view = new Workflowy.Views.Show({model: item});
-    this._swapView(view);
-  },
+    index: function() {
+      var view = new Workflowy.Views.Index({collection: Workflowy.items});
+      this._swapView(view);
+    },
 
-  _swapView: function(newView) {
-    this._currentView && this._currentView.remove();
-    this._currentView = newView;
-    this.$rootEl.html(newView.render().$el);
-  }
-});
+    show: function(uuid) {
+      var item = Workflowy.flatItems.findWhere({uuid: uuid});
+      var view = new Workflowy.Views.Show({model: item});
+      this._swapView(view);
+    },
+
+    _swapView: function(newView) {
+      this._currentView && this._currentView.remove();
+      this._currentView = newView;
+      this.$rootEl.html(newView.render().$el);
+    }
+  });
+})(Workflowy);

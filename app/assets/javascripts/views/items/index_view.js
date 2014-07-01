@@ -1,21 +1,25 @@
-Workflowy.Views.Index = Backbone.View.extend({
+;(function(Workflowy) {
+  "use strict";
 
-  template: JST['items/index'],
+  Workflowy.Views.Index = Backbone.View.extend({
 
-  initialize: function() {
-    this.sublist = new Workflowy.Views.List({collection: this.collection});
+    template: JST['items/index'],
 
-    this.listenTo(this.collection, 'add remove sort', this.render);
-  },
+    initialize: function() {
+      this.sublist = new Workflowy.Views.List({collection: this.collection});
 
-  render: function() {
-    this.$el.html(this.template({items: this.collection}))
-    this.$el.append(this.sublist.render().$el)
-    return this;
-  },
+      this.listenTo(this.collection, 'add remove sort', this.render);
+    },
 
-  remove: function() {
-    this.sublist.remove();
-    return Backbone.View.prototype.remove.apply(this, arguments);
-  }
-});
+    render: function() {
+      this.$el.html(this.template({items: this.collection}))
+      this.$el.append(this.sublist.render().$el)
+      return this;
+    },
+
+    remove: function() {
+      this.sublist.remove();
+      return Backbone.View.prototype.remove.apply(this, arguments);
+    }
+  });
+})(Workflowy);
