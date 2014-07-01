@@ -121,7 +121,7 @@
 
     index: function() {
       return this.collection.indexOf(this);
-    }
+    },
 
     leadSibling: function() {
       return this.collection.at(this.index() - 1);
@@ -129,6 +129,14 @@
 
     tailSibling: function() {
       return this.collection.at(this.index() + 1);
+    },
+
+    indent: function() {
+      if (!this.leadSibling()) return;
+
+      var newCollection = this.leadSibling().children();
+      this.collection.remove(this);
+      newCollection.insertAt(this, -1);
     }
   });
 })(Workflowy);

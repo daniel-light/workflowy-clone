@@ -23,9 +23,9 @@
     insertAt: function(item, position) {
       var newRank = this._rankForPosition(position);
       item.collection = this;
+      item.set('parent_id', this.parent && this.parent.id);
 
       if (newRank !== parseInt(newRank)) {
-        console.log('oh', newRank)
         item.set('rank', position * this._rankIncrement);
         this._rerank(function() {
           item.save({}, {
@@ -38,27 +38,26 @@
       }
 
       else {
-        console.log('eh')
         item.set('rank', newRank);
         this.add(item);
         item.save({}, {
           success: function(item, attributes) {
             item.set(attributes, {parse: true})
-          },
-
-          error: function() { console.log(arguments) }
+          }
         });
       }
     },
 
     _rankForPosition: function(position) {
-      if (position < 0) {
-        return this.last().get('rank') + this._rankIncrement;
+      if (position < -1) throw new UserException('invalid rank specified');
+
+      if (position === -1) {
+        var lastRank = (this.last() || 0) && this.last().get('rank');
+        return lastRank + this._rankIncrement;
       }
       var lowRank = this.at(position - 1) && this.at(position - 1).get('rank'),
           highRank = this.at(position) && this.at(position).get('rank'),
           newRank;
-          console.log(lowRank, highRank)
       if (lowRank === undefined) {
         newRank = parseInt(highRank / 2);
       } else if (highRank === undefined) {

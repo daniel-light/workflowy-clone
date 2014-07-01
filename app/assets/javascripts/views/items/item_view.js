@@ -93,21 +93,30 @@
     },
 
     bindShortcuts: function() {
-      key('return', this.model.cid, this.shortcutNewItem.bind(this));
+      var key = function(keys, f) {
+        window.key(keys, this.model.cid, f);
+      }.bind(this);
+
+      key('return', this.shortcutNewItem.bind(this));
+      key('shift + ctrl + right, tab', this.shortcutIndent.bind(this));
     },
 
-    shortcutNewItem: function(event, handler) {
-      if (!this.isBeingEdited('title')) return;
-
+    shortcutNewItem: function(event) {
       event.preventDefault();
-      var index = this.model.collection.indexOf(this.model);
+      if (!this.isBeingEdited('title')) return;
 
       var newItem = new Workflowy.Models.Item({
         parent_id: this.model && this.model.parent_id,
         uuid: Workflowy.generateUUID()
       });
 
-      this.model.collection.insertAt(newItem, index + 1);
+      this.model.collection.insertAt(newItem, this.model.index() + 1);
+    },
+
+    shortcutIndent: function(event) {
+      event.preventDefault();
+
+      this.model.indent();
     }
   });
 })(Workflowy);

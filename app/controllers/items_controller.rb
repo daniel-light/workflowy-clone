@@ -17,6 +17,12 @@ class ItemsController < ApplicationController
       @item = Item.friendly.find(params[:id])
       return redirect_to items_url unless @item.can_edit?(current_user)
     end
+
+    if item_params[:parent_id]
+      @item = Item.find(item_params[:parent_id])
+      return redirect_to items_url unless @item.can_edit?(current_user)
+    end
+
     @nested_items = current_user.nested_items
 
     @new_item = (@item ? @item.children : current_user.items).new(item_params)
@@ -53,12 +59,17 @@ class ItemsController < ApplicationController
   end
 
   def update
+    if item_params[:parent_id]
+      parent_item = Item.find(item_params[:parent_id])
+      return redirect_to items_url unless @item.can_edit?(current_user)
+    end
+
     if @item.update(item_params)
       request.xhr? ? (render json: @item) : (redirect_to item_url(@item))
     else
       flash.now[:alert] = @item.errors.full_messages
       if request.xhr?
-        render status: 400, json: @item
+        render status: 400, json: @item.errors
       else
         render :edit
       end
@@ -81,7 +92,7 @@ class ItemsController < ApplicationController
   private
 
   def item_params
-    params.require(:item).permit(:title, :notes, :rank, :uuid)
+    params.require(:item).permit(:title, :notes, :rank, :uuid, :parent_id)
   end
 
   def require_owner
