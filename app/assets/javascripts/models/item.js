@@ -114,5 +114,15 @@ Workflowy.Models.Item = Backbone.Model.extend({
       });
     }
     return this.get('notes') || '';
+  },
+
+  leadSibling: function() {
+    var index = this.collection.indexOf(this);
+    return this.collection.at(index - 1);
+  },
+
+  tailSibling: function() {
+    var index = this.collection.indexOf(this);
+    return this.collection.at(index + 1);
   }
 });
