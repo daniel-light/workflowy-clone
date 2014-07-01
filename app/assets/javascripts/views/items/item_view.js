@@ -68,6 +68,33 @@
       el && el.focus();
     },
 
+    getSelectedPosition: function() {
+      var selection = {};
+      var range = window.getSelection().getRangeAt(0);
+
+      selection.edited = this.isBeingEdited('title') ? '.title' : '.notes';
+      selection.startOffset = range.startOffset;
+      selection.endOffset = range.endOffset;
+
+      return selection;
+    },
+
+    restoreSelectedPosition: function(selection) {
+      var el = this.$el.children(selection.edited)[0];
+      el.focus();
+
+      var textNode = el.childNodes[0];
+      if (!textNode) {
+        return;
+      }
+      var range = document.createRange();
+      range.setStart(textNode, selection.startOffset);
+      range.setEnd(textNode, selection.endOffset);
+
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(range);
+    },
+
     toggleCollapsed: function() {
       event.stopPropagation();
       this.model.toggleCollapsed();
@@ -93,16 +120,6 @@
       event.currentTarget.innerHTML = this.model.shortenedNotes();
     },
 
-    activateShortcuts: function(event) {
-      event.stopPropagation();
-      key.setScope(this.model.cid);
-    },
-
-    disableShortcuts: function(event) {
-      event.stopPropagation();
-      key.setScope('all');
-    },
-
     bindShortcuts: function() {
       var key = function(keys, f) {
         window.key(keys, this.model.cid, f);
@@ -112,6 +129,16 @@
       key('shift + ctrl + right, tab', this.shortcutIndent.bind(this));
       key('shift + ctrl + left, shift + tab', this.shortcutOutdent.bind(this));
       key('shift + return', this.shortcutSwapField.bind(this));
+    },
+
+    activateShortcuts: function(event) {
+      event.stopPropagation();
+      key.setScope(this.model.cid);
+    },
+
+    disableShortcuts: function(event) {
+      event.stopPropagation();
+      key.setScope('all');
     },
 
     shortcutNewItem: function(event) {
@@ -153,33 +180,6 @@
       if (!this.isBeingEdited('title')) return;
 
       this.model.outdent();
-    },
-
-    getSelectedPosition: function() {
-      var selection = {};
-      var range = window.getSelection().getRangeAt(0);
-
-      selection.edited = this.isBeingEdited('title') ? '.title' : '.notes';
-      selection.startOffset = range.startOffset;
-      selection.endOffset = range.endOffset;
-
-      return selection;
-    },
-
-    restoreSelectedPosition: function(selection) {
-      var el = this.$el.children(selection.edited)[0];
-      el.focus();
-
-      var textNode = el.childNodes[0];
-      if (!textNode) {
-        return;
-      }
-      var range = document.createRange();
-      range.setStart(textNode, selection.startOffset);
-      range.setEnd(textNode, selection.endOffset);
-
-      window.getSelection().removeAllRanges();
-      window.getSelection().addRange(range);
     }
   });
 })(Workflowy);
