@@ -6,6 +6,8 @@
     template: JST['items/item'],
 
     initialize: function() {
+      window.viewsCount = window.viewsCount || 0;
+      window.viewsCount += 1;
       this.$el.addClass('item');
       this.$el.data('uuid', this.model.get('uuid'));
 
@@ -29,7 +31,7 @@
 
     render: function() {
       if (this.isBeingEdited()) {
-        var selection = this.getSelectedPosition();
+        var selection = this.getSelection();
       }
 
       this.$el.find('li.item').detach();
@@ -41,7 +43,7 @@
       }
 
       if (selection) {
-        this.restoreSelectedPosition(selection);
+        this.restoreSelection(selection);
       }
 
       return this;
@@ -61,6 +63,19 @@
       return this.$el.children('p' + input + ':focus').length > 0;
     },
 
+    retainFocus: function(actionFunction) {
+      if (this.isBeingEdited()) {
+        var selection = this.getSelection();
+      }
+
+      var result = actionFunction();
+
+      if (selection) {
+        this.restoreSelection(selection);
+      }
+      return result;
+    },
+
     focus: function(field) {
       field = field || 'title';
       var selector = '.' + field;
@@ -68,7 +83,7 @@
       el && el.focus();
     },
 
-    getSelectedPosition: function() {
+    getSelection: function() {
       var selection = {};
       var range = window.getSelection().getRangeAt(0);
 
@@ -79,7 +94,7 @@
       return selection;
     },
 
-    restoreSelectedPosition: function(selection) {
+    restoreSelection: function(selection) {
       var el = this.$el.children(selection.edited)[0];
       el.focus();
 
@@ -142,8 +157,8 @@
     },
 
     shortcutNewItem: function(event) {
-      event.preventDefault();
       if (!this.isBeingEdited('title')) return;
+      event.preventDefault();
 
       var newItem = new Workflowy.Models.Item({
         parent_id: this.model && this.model.parent_id,

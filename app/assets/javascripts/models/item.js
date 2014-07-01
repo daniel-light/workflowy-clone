@@ -138,9 +138,13 @@
     indent: function() {
       if (!this.leadSibling()) return;
 
-      var newCollection = this.leadSibling().children();
-      this.collection.remove(this);
-      newCollection.insertAt(this, -1);
+      this.view.retainFocus(function() {
+
+        var newCollection = this.leadSibling().children();
+        this.collection.remove(this);
+        newCollection.insertAt(this, -1);
+
+      }.bind(this));
     },
 
     outdent: function() {
@@ -156,10 +160,14 @@
           return;
       }
 
-      var position = this.collection.parent.index() + 1;
-      var newCollection = this.collection.parent.collection;
-      this.collection.remove(this);
-      newCollection.insertAt(this, position);
+      this.view.retainFocus(function() {
+
+        var position = this.collection.parent.index() + 1;
+        var newCollection = this.collection.parent.collection;
+        this.collection.remove(this);
+        newCollection.insertAt(this, position);
+
+      }.bind(this));
     }
   });
 })(Workflowy);

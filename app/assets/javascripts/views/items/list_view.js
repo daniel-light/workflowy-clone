@@ -5,6 +5,8 @@
     tagName: 'ul',
 
     initialize: function() {
+      window.viewCount = window.viewCount || 0;
+      window.viewCount += 1;
       this.$el.addClass('list');
 
       this.collection.forEach(function(item) {
@@ -34,9 +36,11 @@
     },
 
     addNewItemView: function(item) {
-      item.view = new Workflowy.Views.Item({model: item});
+      if (!item.view) {
+        item.view =  new Workflowy.Views.Item({model: item});
+        item.trigger('viewCreated');
+      }
       this.render();
-      item.trigger('viewCreated');
     }
   });
 })(Workflowy);
