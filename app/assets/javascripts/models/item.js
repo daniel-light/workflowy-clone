@@ -141,6 +141,25 @@
       var newCollection = this.leadSibling().children();
       this.collection.remove(this);
       newCollection.insertAt(this, -1);
+    },
+
+    outdent: function() {
+      // Don't outdent if
+      //   - we are the item being shown
+      //   - we are in the top level list of the whole document
+      //   - we are nested directly underneath the item being shown
+      if (
+        !this.collection ||
+        !this.collection.parent ||
+        !this.collection.parent.collection
+      ) {
+          return;
+      }
+
+      var position = this.collection.parent.index() + 1;
+      var newCollection = this.collection.parent.collection;
+      this.collection.remove(this);
+      newCollection.insertAt(this, position);
     }
   });
 })(Workflowy);

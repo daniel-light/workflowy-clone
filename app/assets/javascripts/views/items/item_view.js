@@ -110,6 +110,7 @@
 
       key('return', this.shortcutNewItem.bind(this));
       key('shift + ctrl + right, tab', this.shortcutIndent.bind(this));
+      key('shift + ctrl + left, shift + tab', this.shortcutOutdent.bind(this));
       key('shift + return', this.shortcutSwapField.bind(this));
     },
 
@@ -142,8 +143,16 @@
 
     shortcutIndent: function(event) {
       event.preventDefault();
+      if (!this.isBeingEdited('title')) return;
 
       this.model.indent();
+    },
+
+    shortcutOutdent: function(event) {
+      event.preventDefault();
+      if (!this.isBeingEdited('title')) return;
+
+      this.model.outdent();
     },
 
     getSelectedPosition: function() {

@@ -52,7 +52,7 @@
       if (position < -1) throw new UserException('invalid rank specified');
 
       if (position === -1) {
-        var lastRank = (this.last() || 0) && this.last().get('rank');
+        var lastRank = this.last() ? this.last().get('rank') : 0;
         return lastRank + this._rankIncrement;
       }
 
