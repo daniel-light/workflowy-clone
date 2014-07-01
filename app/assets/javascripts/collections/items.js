@@ -23,7 +23,7 @@
     insertAt: function(item, position) {
       var newRank = this._rankForPosition(position);
       item.collection = this;
-      item.set('parent_id', this.parent && this.parent.id);
+      item.set('parent_id', this.parent ? this.parent.id : null);
 
       if (newRank !== parseInt(newRank)) {
         item.set('rank', position * this._rankIncrement);
@@ -43,7 +43,8 @@
         item.save({}, {
           success: function(item, attributes) {
             item.set(attributes, {parse: true})
-          }
+          },
+          error: function() { console.log(arguments) }
         });
       }
     },

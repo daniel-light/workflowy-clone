@@ -98,7 +98,9 @@
       event.preventDefault();
       if (!this.isBeingEdited('title')) return;
 
-      this.model.outdent();
+      if (this.isOutdentable()) {
+        this.model.outdent();
+      }
     }
   });
 })(Workflowy);

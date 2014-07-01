@@ -148,16 +148,12 @@
     },
 
     outdent: function() {
-      // Don't outdent if
-      //   - we are the item being shown
-      //   - we are in the top level list of the whole document
-      //   - we are nested directly underneath the item being shown
       if (
         !this.collection ||
         !this.collection.parent ||
         !this.collection.parent.collection
       ) {
-          return;
+          throw new UserException("Item cannot be outdented");
       }
 
       this.view.retainFocus(function() {
