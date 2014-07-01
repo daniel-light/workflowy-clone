@@ -9,8 +9,11 @@ window.Workflowy = {
     var items = JSON.parse($('#bootstrapped_items_json').html()).items;
     Workflowy.items = new Workflowy.Collections.Items(items, {parse: true});
 
-    savedView = new Workflowy.Views.Saved({collection: Workflowy.flatItems});
+    var savedView = new Workflowy.Views.Saved({collection: Workflowy.flatItems});
     $('.saved').replaceWith(savedView.render().$el);
+
+    window.undoView = new Workflowy.Views.Undo({collection: Workflowy.flatItems});
+    $('.dos').replaceWith(undoView.render().$el);
 
     new Workflowy.Routers.Router({$rootEl: $('#content')});
     Backbone.history.start();
