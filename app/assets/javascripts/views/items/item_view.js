@@ -61,6 +61,13 @@
       return this.$el.children('p' + input + ':focus').length > 0;
     },
 
+    focus: function(field) {
+      field = field || 'title';
+      var selector = '.' + field;
+      var el = this.$el.children(selector)[0];
+      el && el.focus();
+    },
+
     toggleCollapsed: function() {
       event.stopPropagation();
       this.model.toggleCollapsed();
@@ -103,6 +110,7 @@
 
       key('return', this.shortcutNewItem.bind(this));
       key('shift + ctrl + right, tab', this.shortcutIndent.bind(this));
+      key('shift + return', this.shortcutSwapField.bind(this));
     },
 
     shortcutNewItem: function(event) {
@@ -115,6 +123,14 @@
       });
 
       this.model.collection.insertAt(newItem, this.model.index() + 1);
+
+      newItem.view.focus();
+    },
+
+    shortcutSwapField: function(event) {
+      event.preventDefault();
+
+      this.isBeingEdited('title') ? this.focus('notes') : this.focus('title');
     },
 
     shortcutIndent: function(event) {
@@ -130,9 +146,6 @@
       selection.edited = this.isBeingEdited('title') ? '.title' : '.notes';
       selection.startOffset = range.startOffset;
       selection.endOffset = range.endOffset;
-      console.log(range);
-      window.range = range;
-      window.container = selection.startContainer;
 
       return selection;
     },
@@ -142,6 +155,9 @@
       el.focus();
 
       var textNode = el.childNodes[0];
+      if (!textNode) {
+        return;
+      }
       var range = document.createRange();
       range.setStart(textNode, selection.startOffset);
       range.setEnd(textNode, selection.endOffset);
