@@ -58,6 +58,7 @@
       key('shift + ctrl + right, tab', this.shortcutIndent.bind(this));
       key('shift + ctrl + left, shift + tab', this.shortcutOutdent.bind(this));
       key('shift + return', this.shortcutSwapField.bind(this));
+      key('backspace', this.shortcutBackspace.bind(this));
     },
 
     shortcutReturn: function(event) {
@@ -68,6 +69,29 @@
         this.model.outdent();
       } else {
         this.createNewItem();
+      }
+    },
+
+    shortcutBackspace: function(event) {
+      if (this.isBeingEdited('title') && this.getSelection().startOffset === 0) {
+
+        if (!this.model.title()) {
+          event.preventDefault();
+          this.model.destroy();
+        }
+        else if (this.model.leadSibling()) {
+
+          this.model.leadSibling().save({
+            title: this.model.leadSibling().title() + this.model.title()
+          })
+          event.preventDefault();
+          this.model.destroy();
+        }
+      }
+
+      else if (this.isBeingEdited('notes') && this.model.notes() === '') {
+        event.preventDefault();
+        this.focus('title');
       }
     },
 

@@ -42,6 +42,14 @@
       return _.omit(this.attributes, 'collapsed');
     },
 
+    destroy: function() {
+      this.children().forEach(function(item) {
+        item.destroy();
+      });
+
+      Backbone.Model.prototype.destroy.apply(this, arguments);
+    },
+
     updateChangeTime: function() {
       this._changeTime = new Date();
     },
