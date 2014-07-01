@@ -112,6 +112,25 @@
         this.model.collection.parent &&
         this.model.collection.parent.view
       );
+    },
+
+    createNewItem: function() {
+      if (this.model.title() !== '' && this.getSelection().startOffset === 0) {
+        var position = this.model.index();
+      } else {
+        var position = this.model.index() + 1;
+      }
+
+      var newItem = this.model.collection.createAt(position);
+
+      if (newItem.view) {
+        newItem.view.focus();
+      }
+      else {
+        this.listenToOnce(newItem, 'viewCreated', function(){
+          newItem.view.focus();
+        });
+      }
     }
   });
 })(Workflowy);

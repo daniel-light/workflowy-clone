@@ -64,20 +64,10 @@
       if (!this.isBeingEdited('title')) return;
       event.preventDefault();
 
-      var newItem = new Workflowy.Models.Item({
-        parent_id: this.model && this.model.parent_id,
-        uuid: Workflowy.generateUUID()
-      });
-
-      this.model.collection.insertAt(newItem, this.model.index() + 1);
-
-      if (newItem.view) {
-        newItem.view.focus();
-      }
-      else {
-        this.listenToOnce(newItem, 'viewCreated', function(){
-          newItem.view.focus();
-        });
+      if (this.model.title() === '' && this.isOutdentable()) {
+        this.model.outdent();
+      } else {
+        this.createNewItem();
       }
     },
 

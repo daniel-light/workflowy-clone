@@ -49,6 +49,16 @@
       }
     },
 
+    createAt: function(position) {
+      var newItem = new Workflowy.Models.Item({
+        uuid: Workflowy.generateUUID()
+      });
+
+      this.insertAt(newItem, position);
+
+      return newItem;
+    },
+
     _rankForPosition: function(position) {
       if (position < -1) throw new UserException('invalid rank specified');
 
