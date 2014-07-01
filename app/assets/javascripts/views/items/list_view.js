@@ -36,6 +36,7 @@
     addNewItemView: function(item) {
       item.view = new Workflowy.Views.Item({model: item});
       this.render();
+      item.trigger('viewCreated');
     }
   });
 })(Workflowy);

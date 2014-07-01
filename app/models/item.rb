@@ -28,6 +28,7 @@ class Item < ActiveRecord::Base
     transaction do
       connection.execute 'SET CONSTRAINTS items_rank DEFERRED'
       ranks_hash.keys.each do |id|
+        next if id == 'undefined'
         update(id, rank: ranks_hash[id])
       end
     end

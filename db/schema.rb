@@ -27,7 +27,6 @@ ActiveRecord::Schema.define(version: 20140630232756) do
     t.string   "uuid",       null: false
   end
 
-  add_index "items", ["user_id", "parent_id", "rank"], name: "item_rank", unique: true, using: :btree
   add_index "items", ["user_id", "parent_id", "rank"], name: "items_rank", unique: true, using: :btree
   add_index "items", ["uuid"], name: "index_items_on_uuid", unique: true, using: :btree
 

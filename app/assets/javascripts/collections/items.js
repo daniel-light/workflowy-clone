@@ -33,8 +33,8 @@
               item.set(attributes, {parse: true})
             }
           });
-        this.add(item);
         }.bind(this));
+        this.add(item);
       }
 
       else {
@@ -55,9 +55,16 @@
         var lastRank = (this.last() || 0) && this.last().get('rank');
         return lastRank + this._rankIncrement;
       }
+
       var lowRank = this.at(position - 1) && this.at(position - 1).get('rank'),
-          highRank = this.at(position) && this.at(position).get('rank'),
-          newRank;
+          highRank = this.at(position) && this.at(position).get('rank');
+
+      return this._rankBetween(lowRank, highRank);
+    },
+
+    _rankBetween: function(lowRank, highRank) {
+      var newRank;
+
       if (lowRank === undefined) {
         newRank = parseInt(highRank / 2);
       } else if (highRank === undefined) {

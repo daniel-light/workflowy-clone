@@ -124,7 +124,14 @@
 
       this.model.collection.insertAt(newItem, this.model.index() + 1);
 
-      newItem.view.focus();
+      if (newItem.view) {
+        newItem.view.focus();
+      }
+      else {
+        this.listenToOnce(newItem, 'viewCreated', function(){
+          newItem.view.focus();
+        });
+      }
     },
 
     shortcutSwapField: function(event) {
