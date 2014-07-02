@@ -71,7 +71,7 @@
 
     focus: function(field, offset) {
       field = field || 'title';
-      offset = offset || this.model.title().length;
+      offset = offset || this.model.get('title').length;
 
       var selection = {
         edited: '.' + field,

@@ -144,12 +144,18 @@
     shortcutMoveUp: function(event) {
       event.preventDefault();
 
-      var neighbor = this.model.nearestNeighbor(true);
+      var neighbor = this.model.nearestNeighbor({
+        traverse: this.model.leadSibling,
+        pick: this.model.collection.last
+      });
 
       if (neighbor) {
+        var newPosition = neighbor.position;
+        if (newPosition === undefined) newPosition = neighbor.list.last();
+
         this.retainFocus(function() {
           this.model.collection.remove(this.model);
-          neighbor.list.insertAt(this.model, neighbor.position);
+          neighbor.list.insertAt(this.model, newPosition);
         });
       }
     },
@@ -157,22 +163,44 @@
     shortcutMoveDown: function(event) {
       event.preventDefault();
 
-      var neighbor = this.model.nearestNeighbor(false);
+      var neighbor = this.model.nearestNeighbor({
+        traverse: this.model.tailSibling,
+        pick: this.model.collection.first
+      });
 
       if (neighbor) {
+        var newPosition = neighbor.position;
+        if (newPosition === undefined) newPosition = neighbor.list.first();
+
         this.retainFocus(function() {
           this.model.collection.remove(this.model);
-          neighbor.list.insertAt(this.model, neighbor.position);
+          neighbor.list.insertAt(this.model, newPosition);
         });
       }
     },
 
     shortcutFocusUp: function(event) {
+      event.preventDefault();
 
+      var neighbor = this.model.nearestNeighbor({
+        traverse: this.model.leadSibling,
+        pick: this.model.collection.last,
+        limit: false
+      });
+
+      if (neighbor) neighbor.neighbor.view.focus();
     },
 
     shortcutFocusDown: function(event) {
+      event.preventDefault();
 
+      var neighbor = this.model.nearestNeighbor({
+        traverse: this.model.tailSibling,
+        pick: this.model.collection.first,
+        limit: false
+      });
+
+      if (neighbor) neighbor.neighbor.view.focus();
     }
   });
 })(Workflowy);

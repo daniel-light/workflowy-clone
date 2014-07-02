@@ -14,8 +14,10 @@
     },
 
     initialize: function() {
-      this.title = this.title || '';
-      this.notes = this.notes || '';
+      this.set({
+        title: this.get('title') || '',
+        notes: this.get('notes') || ''
+      });
 
       this.listenTo(this, 'change', this.updateChangeTime);
       this.listenTo(this, 'sync', this.updateSyncTime);
@@ -169,14 +171,19 @@
 
     },
 
-    nearestNeighbor: function(up) {
-      var traverse = up ? this.leadSibling : this.tailSibling,
-          pick = up ? this.collection.first : this.collection.last,
+    nearestNeighbor: function(options) {
+      var traverse = options.traverse,
+          pick = options.pick,
           list = this.collection,
-          newPosition;
+          newPosition,
+          neighbor;
+
+      var limit = options.limit;
+      if (limit === undefined) limit = true;
 
       if (traverse.call(this)) {
         newPosition = traverse.call(this).index();
+        neighbor = traverse.call(this);
       }
       else {
         var stepsUp = 0;
@@ -185,12 +192,13 @@
           if (traverse.call(list.parent)) {
 
             list = traverse.call(list.parent).children();
-            while (list.length && stepsUp) {
+            while (list.length && (!limit || stepsUp)) {
               list = pick.call(list).children();
               --stepsUp;
             }
 
-            newPosition = list.length;
+            var exit = true;
+            neighbor = list.parent;
             break;
           }
           else {
@@ -200,8 +208,8 @@
         }
       }
 
-      if (typeof newPosition === 'number') {
-        return {position: newPosition, list: list};
+      if (typeof newPosition === 'number' || exit) {
+        return {position: newPosition, list: list, neighbor: neighbor};
       } else {
         return undefined;
       }
