@@ -87,7 +87,6 @@
       return '<a href="#' + uuid + '">' + title + '</a>';
     },
 
-    // do not record this into undoable actions or mark the document as unsaved
     toggleCollapsed: function() {
       if (this.children().isEmpty()) return;
       this.set('collapsed', !this.get('collapsed'))

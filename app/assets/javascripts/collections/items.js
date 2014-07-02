@@ -60,7 +60,9 @@
     },
 
     _rankForPosition: function(position) {
-      if (position < -1) throw new UserException('invalid rank specified');
+      if (position < -1 || position > this.length) {
+        throw new UserException('invalid rank specified');
+      }
 
       if (position === -1) {
         var lastRank = this.last() ? this.last().get('rank') : 0;

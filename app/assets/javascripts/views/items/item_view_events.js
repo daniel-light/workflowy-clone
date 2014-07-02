@@ -57,6 +57,8 @@
       key('return', this.shortcutReturn.bind(this));
       key('shift + ctrl + right, tab', this.shortcutIndent.bind(this));
       key('shift + ctrl + left, shift + tab', this.shortcutOutdent.bind(this));
+      key('shift + ctrl + up', this.shortcutMoveUp.bind(this));
+      key('shift + ctrl + down', this.shortcutMoveDown.bind(this));
       key('shift + return', this.shortcutSwapField.bind(this));
       key('backspace', this.shortcutBackspace.bind(this));
     },
@@ -115,6 +117,39 @@
       if (this.isOutdentable()) {
         this.model.outdent();
       }
+    },
+
+    shortcutMoveUp: function(event) {
+      event.preventDefault();
+      var list = this.model.collection,
+          newPosition;
+
+      if (this.model.leadSibling()) {
+        newPosition = this.model.index() - 1;
+      }
+      else {
+        while (list.parent) {
+          if (list.parent.leadSibling()) {
+            list = list.parent.leadSibling().children();
+            newPosition = list.length;
+            break;
+          }
+          else {
+            list = list.parent.collection;
+          }
+        }
+      }
+
+      if (typeof newPosition === 'number') {
+        this.retainFocus(function() {
+          this.model.collection.remove(this.model);
+          list.insertAt(this.model, newPosition);
+        }.bind(this));
+      }
+    },
+
+    shortcutMoveDown: function(event) {
+
     }
   });
 })(Workflowy);
