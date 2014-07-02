@@ -56,12 +56,12 @@
       return this.$el.children('p' + input + ':focus').length > 0;
     },
 
-    retainFocus: function(actionFunction) {
+    retainFocus: function(action) {
       if (this.isBeingEdited()) {
         var selection = this.getSelection();
       }
 
-      var result = actionFunction();
+      var result = action.call(this);
 
       if (selection) {
         this.restoreSelection(selection);

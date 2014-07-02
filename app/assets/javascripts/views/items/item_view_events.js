@@ -51,16 +51,20 @@
 
     bindShortcuts: function() {
       var key = function(keys, f) {
-        window.key(keys, this.model.cid, f);
+        window.key(keys, this.model.cid, f.bind(this));
       }.bind(this);
 
-      key('return', this.shortcutReturn.bind(this));
-      key('shift + ctrl + right, tab', this.shortcutIndent.bind(this));
-      key('shift + ctrl + left, shift + tab', this.shortcutOutdent.bind(this));
-      key('shift + ctrl + up', this.shortcutMoveUp.bind(this));
-      key('shift + ctrl + down', this.shortcutMoveDown.bind(this));
-      key('shift + return', this.shortcutSwapField.bind(this));
-      key('backspace', this.shortcutBackspace.bind(this));
+      key('return', this.shortcutReturn);
+      key('backspace', this.shortcutBackspace);
+
+      key('shift + ctrl + right, tab', this.shortcutIndent);
+      key('shift + ctrl + left, shift + tab', this.shortcutOutdent);
+      key('shift + ctrl + up', this.shortcutMoveUp);
+      key('shift + ctrl + down', this.shortcutMoveDown);
+
+      key('shift + return', this.shortcutSwapField);
+      key('up', this.shortcutFocusUp);
+      key('down', this.shortcutFocusDown);
     },
 
     shortcutReturn: function(event) {
@@ -68,7 +72,9 @@
       event.preventDefault();
 
       if (this.model.title() === '' && this.isOutdentable()) {
-        this.model.outdent();
+        this.retainFocus(function() {
+          this.model.outdent();
+        });
       } else {
         this.createNewItem();
       }
@@ -96,7 +102,7 @@
 
           leadSibling.save({
             title: this.model.leadSibling().title() + this.model.title()
-          })
+          });
           event.preventDefault();
           this.model.destroy();
           leadSibling.view.focus();
@@ -121,7 +127,7 @@
 
       this.retainFocus(function() {
         this.model.indent();
-      }.bind(this));
+      });
     },
 
     shortcutOutdent: function(event) {
@@ -131,84 +137,42 @@
       if (this.isOutdentable()) {
         this.retainFocus(function() {
           this.model.outdent();
-        }.bind(this));
+        });
       }
     },
 
     shortcutMoveUp: function(event) {
       event.preventDefault();
-      var list = this.model.collection,
-          newPosition;
 
-      if (this.model.leadSibling()) {
-        newPosition = this.model.index() - 1;
-      }
-      else {
-        var stepsUp = 0;
+      var neighbor = this.model.nearestNeighbor(true);
 
-        while (list.parent) {
-          if (list.parent.leadSibling()) {
-
-            list = list.parent.leadSibling().children();
-            while (list.length && stepsUp) {
-              list = list.last().children();
-              --stepsUp;
-            }
-
-            newPosition = list.length;
-            break;
-          }
-          else {
-            list = list.parent.collection;
-            ++stepsUp;
-          }
-        }
-      }
-
-      if (typeof newPosition === 'number') {
+      if (neighbor) {
         this.retainFocus(function() {
           this.model.collection.remove(this.model);
-          list.insertAt(this.model, newPosition);
-        }.bind(this));
+          neighbor.list.insertAt(this.model, neighbor.position);
+        });
       }
     },
 
     shortcutMoveDown: function(event) {
       event.preventDefault();
-      var list = this.model.collection,
-          newPosition;
 
-      if (this.model.tailSibling()) {
-        newPosition = this.model.index() + 1;
-      }
-      else {
-        var stepsUp = 0;
+      var neighbor = this.model.nearestNeighbor(false);
 
-        while (list.parent) {
-          if (list.parent.tailSibling()) {
-
-            list = list.parent.tailSibling().children();
-            while (list.length && stepsUp) {
-              list = list.first().children();
-              --stepsUp;
-            }
-
-            newPosition = 0;
-            break;
-          }
-          else {
-            list = list.parent.collection;
-            ++stepsUp;
-          }
-        }
-      }
-
-      if (typeof newPosition === 'number') {
+      if (neighbor) {
         this.retainFocus(function() {
           this.model.collection.remove(this.model);
-          list.insertAt(this.model, newPosition);
-        }.bind(this));
+          neighbor.list.insertAt(this.model, neighbor.position);
+        });
       }
+    },
+
+    shortcutFocusUp: function(event) {
+
+    },
+
+    shortcutFocusDown: function(event) {
+
     }
   });
 })(Workflowy);

@@ -14,6 +14,9 @@
     },
 
     initialize: function() {
+      this.title = this.title || '';
+      this.notes = this.notes || '';
+
       this.listenTo(this, 'change', this.updateChangeTime);
       this.listenTo(this, 'sync', this.updateSyncTime);
     },
@@ -164,6 +167,44 @@
       this.collection.remove(this);
       newCollection.insertAt(this, position);
 
+    },
+
+    nearestNeighbor: function(up) {
+      var traverse = up ? this.leadSibling : this.tailSibling,
+          pick = up ? this.collection.first : this.collection.last,
+          list = this.collection,
+          newPosition;
+
+      if (traverse.call(this)) {
+        newPosition = traverse.call(this).index();
+      }
+      else {
+        var stepsUp = 0;
+
+        while (list.parent) {
+          if (traverse.call(list.parent)) {
+
+            list = traverse.call(list.parent).children();
+            while (list.length && stepsUp) {
+              list = pick.call(list).children();
+              --stepsUp;
+            }
+
+            newPosition = list.length;
+            break;
+          }
+          else {
+            list = list.parent.collection;
+            ++stepsUp;
+          }
+        }
+      }
+
+      if (typeof newPosition === 'number') {
+        return {position: newPosition, list: list};
+      } else {
+        return undefined;
+      }
     }
   });
 })(Workflowy);
