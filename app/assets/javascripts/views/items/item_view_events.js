@@ -128,14 +128,23 @@
         newPosition = this.model.index() - 1;
       }
       else {
+        var stepsUp = 0;
+
         while (list.parent) {
           if (list.parent.leadSibling()) {
+
             list = list.parent.leadSibling().children();
+            while (list.length && stepsUp) {
+              list = list.last().children();
+              --stepsUp;
+            }
+
             newPosition = list.length;
             break;
           }
           else {
             list = list.parent.collection;
+            ++stepsUp;
           }
         }
       }
