@@ -77,17 +77,29 @@
     shortcutBackspace: function(event) {
       if (this.isBeingEdited('title') && this.getSelection().startOffset === 0) {
 
-        if (!this.model.title()) {
-          event.preventDefault();
-          this.model.destroy();
+        if (this.model.children().length > 0) {
+          return;
         }
-        else if (this.model.leadSibling()) {
 
-          this.model.leadSibling().save({
+        else if (!this.model.title()) {
+          event.preventDefault();
+
+          var next = this.model.leadSibling() || this.model.collection.parent;
+          this.model.destroy();
+          if (next) {
+            next.view.focus();
+          }
+        }
+
+        else if (this.model.leadSibling()) {
+          var leadSibling = this.model.leadSibling();
+
+          leadSibling.save({
             title: this.model.leadSibling().title() + this.model.title()
           })
           event.preventDefault();
           this.model.destroy();
+          leadSibling.view.focus();
         }
       }
 
@@ -107,7 +119,9 @@
       event.preventDefault();
       if (!this.isBeingEdited('title')) return;
 
-      this.model.indent();
+      this.retainFocus(function() {
+        this.model.indent();
+      }.bind(this));
     },
 
     shortcutOutdent: function(event) {
@@ -115,7 +129,9 @@
       if (!this.isBeingEdited('title')) return;
 
       if (this.isOutdentable()) {
-        this.model.outdent();
+        this.retainFocus(function() {
+          this.model.outdent();
+        }.bind(this));
       }
     },
 
@@ -150,7 +166,10 @@
       }
 
       if (typeof newPosition === 'number') {
-        this.moveTo(list, newPosition);
+        this.retainFocus(function() {
+          this.model.collection.remove(this.model);
+          list.insertAt(this.model, newPosition);
+        }.bind(this));
       }
     },
 
@@ -185,7 +204,10 @@
       }
 
       if (typeof newPosition === 'number') {
-        this.moveTo(list, newPosition);
+        this.retainFocus(function() {
+          this.model.collection.remove(this.model);
+          list.insertAt(this.model, newPosition);
+        }.bind(this));
       }
     }
   });

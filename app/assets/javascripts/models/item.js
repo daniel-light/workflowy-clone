@@ -145,13 +145,9 @@
     indent: function() {
       if (!this.leadSibling()) return;
 
-      this.view.retainFocus(function() {
-
-        var newCollection = this.leadSibling().children();
-        this.collection.remove(this);
-        newCollection.insertAt(this, -1);
-
-      }.bind(this));
+      var newCollection = this.leadSibling().children();
+      this.collection.remove(this);
+      newCollection.insertAt(this, -1);
     },
 
     outdent: function() {
@@ -163,14 +159,11 @@
           throw new UserException("Item cannot be outdented");
       }
 
-      this.view.retainFocus(function() {
+      var position = this.collection.parent.index() + 1;
+      var newCollection = this.collection.parent.collection;
+      this.collection.remove(this);
+      newCollection.insertAt(this, position);
 
-        var position = this.collection.parent.index() + 1;
-        var newCollection = this.collection.parent.collection;
-        this.collection.remove(this);
-        newCollection.insertAt(this, position);
-
-      }.bind(this));
     }
   });
 })(Workflowy);

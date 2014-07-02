@@ -69,18 +69,17 @@
       return result;
     },
 
-    moveTo: function(list, position) {
-      this.retainFocus(function() {
-        this.model.collection.remove(this.model);
-        list.insertAt(this.model, position);
-      }.bind(this));
-    },
-
-    focus: function(field) {
+    focus: function(field, offset) {
       field = field || 'title';
-      var selector = '.' + field;
-      var el = this.$el.children(selector)[0];
-      el && el.focus();
+      offset = offset || this.model.title().length;
+
+      var selection = {
+        edited: '.' + field,
+        startOffset: offset,
+        endOffset: offset
+      }
+
+      this.restoreSelection(selection);
     },
 
     getSelection: function() {
