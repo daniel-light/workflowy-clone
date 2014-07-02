@@ -182,25 +182,15 @@
     shortcutFocusUp: function(event) {
       event.preventDefault();
 
-      var neighbor = this.model.nearestNeighbor({
-        traverse: this.model.leadSibling,
-        pick: this.model.collection.last,
-        limit: false
-      });
-
-      if (neighbor) neighbor.neighbor.view.focus();
+      var itemAbove = this.model.above();
+      if (itemAbove) itemAbove.view.focus();
     },
 
     shortcutFocusDown: function(event) {
       event.preventDefault();
 
-      var neighbor = this.model.nearestNeighbor({
-        traverse: this.model.tailSibling,
-        pick: this.model.collection.first,
-        limit: false
-      });
-
-      if (neighbor) neighbor.neighbor.view.focus();
+      var itemBelow = this.model.below();
+      if (itemBelow) itemBelow.view.focus();
     },
 
     setDragopolis: function() {
@@ -210,6 +200,7 @@
       });
 
       this.$el.draggable({
+        handle: '.bullet',
         helper: function() {
           return this.$el.children('.bullet');
         }.bind(this),

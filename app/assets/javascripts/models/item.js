@@ -213,6 +213,53 @@
       } else {
         return undefined;
       }
+    },
+
+    above: function() {
+      if (this.leadSibling()) {
+        return this.leadSibling()._leaf(this.collection.last);
+      }
+
+      else {
+        return this.collection.parent;
+      }
+    },
+
+    below: function() {
+      if (this.children().length > 0) {
+        return this.children().first();
+      }
+      else {
+        var ancestor = this._walkUpUntil(function(item) {
+          return !!item.tailSibling();
+        });
+        return ancestor ? ancestor.tailSibling() : null;
+      }
+    },
+
+    _leaf: function(step, maxSteps) {
+      var item = this,
+          list = this.children();
+
+      while (list && (maxSteps === undefined || maxSteps)) {
+
+        if (step.call(list)) {
+          item = step.call(list);
+          list = item.children();
+        } else {
+          list = null;
+        }
+      }
+
+      return item;
+    },
+
+    _walkUpUntil: function(condition) {
+      if (condition(this)) return this;
+
+      if (!this.collection.parent) return null;
+
+      return this.collection.parent._walkUpUntil(condition);
     }
   });
 })(Workflowy);
