@@ -201,6 +201,21 @@
       });
 
       if (neighbor) neighbor.neighbor.view.focus();
+    },
+
+    setDragopolis: function() {
+      this.$el.droppable({
+        hoverClass: 'draggable-hover',
+        greedy: true
+      });
+
+      this.$el.draggable({
+        helper: function() {
+          return this.$el.children('.bullet');
+        }.bind(this),
+
+        cursorAt: {top: 10, left: 10}
+      });
     }
   });
 })(Workflowy);

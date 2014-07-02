@@ -7,18 +7,14 @@
 
 .item {
   @extend .clear-group;
-  padding-top: 5px;
+  padding-bottom: 5px;
+}
 
-  form { // deprecated?
-    display: inline;
+.item.draggable-hover {
+  padding-bottom: 0px;
 
-    span {
-      line-height: 1;
-      width: 11px;
-      height: 11px;
-      font-size: 11px;
-    }
-
+  > .indented {
+    border-bottom: 5px solid #ccc;
   }
 }
 
@@ -53,6 +49,19 @@
   }
 }
 
+article > .list > .item {
+  > p.title {
+    white-space: pre-wrap;
+    font-size: 30px;
+  }
+
+  > p.notes {
+    white-space: pre-wrap;
+    font-size: 16px;
+    color: #666;
+  }
+}
+
 p.title {
   white-space: pre-wrap;
   margin-left: 34px;
@@ -62,10 +71,4 @@ p.notes {
   margin-left: 34px;
   font-size: 13px;
   color: #666;
-}
-h1.title {
-  white-space: pre-wrap;
-}
-h1.notes {
-  white-space: pre-wrap;
 }
