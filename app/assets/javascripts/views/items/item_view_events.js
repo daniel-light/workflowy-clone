@@ -150,15 +150,43 @@
       }
 
       if (typeof newPosition === 'number') {
-        this.retainFocus(function() {
-          this.model.collection.remove(this.model);
-          list.insertAt(this.model, newPosition);
-        }.bind(this));
+        this.moveTo(list, newPosition);
       }
     },
 
     shortcutMoveDown: function(event) {
+      event.preventDefault();
+      var list = this.model.collection,
+          newPosition;
 
+      if (this.model.tailSibling()) {
+        newPosition = this.model.index() + 1;
+      }
+      else {
+        var stepsUp = 0;
+
+        while (list.parent) {
+          if (list.parent.tailSibling()) {
+
+            list = list.parent.tailSibling().children();
+            while (list.length && stepsUp) {
+              list = list.first().children();
+              --stepsUp;
+            }
+
+            newPosition = 0;
+            break;
+          }
+          else {
+            list = list.parent.collection;
+            ++stepsUp;
+          }
+        }
+      }
+
+      if (typeof newPosition === 'number') {
+        this.moveTo(list, newPosition);
+      }
     }
   });
 })(Workflowy);

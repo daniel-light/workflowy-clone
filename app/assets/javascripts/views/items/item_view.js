@@ -69,6 +69,13 @@
       return result;
     },
 
+    moveTo: function(list, position) {
+      this.retainFocus(function() {
+        this.model.collection.remove(this.model);
+        list.insertAt(this.model, position);
+      }.bind(this));
+    },
+
     focus: function(field) {
       field = field || 'title';
       var selector = '.' + field;
