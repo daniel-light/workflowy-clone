@@ -45,6 +45,7 @@
 
     remove: function() {
       this.sublist.remove();
+      this.model.view = null;
       return Backbone.View.prototype.remove.apply(this, arguments);
     },
 

@@ -30,6 +30,10 @@
       return this._children;
     },
 
+    parent: function() {
+      return this.collection.parent;
+    },
+
     parse: function(response) {
       Workflowy.flatItems.add(this);
 
@@ -173,46 +177,21 @@
 
     nearestNeighbor: function(options) {
       var traverse = options.traverse,
-          pick = options.pick,
-          list = this.collection,
-          newPosition,
-          neighbor;
+          pick = options.pick;
 
-      var limit = options.limit;
-      if (limit === undefined) limit = true;
+      var stepsUp = -1;
+      var ancestor = this._walkUpUntil(function(item) {
+        ++stepsUp;
+        return !!traverse.call(item);
+      });
 
-      if (traverse.call(this)) {
-        newPosition = traverse.call(this).index();
-        neighbor = traverse.call(this);
+      if (!ancestor) {
+        return null;
       }
-      else {
-        var stepsUp = 0;
+      var newAncestor = traverse.call(ancestor);
+      return newAncestor._leaf(pick, stepsUp);
 
-        while (list.parent) {
-          if (traverse.call(list.parent)) {
-
-            list = traverse.call(list.parent).children();
-            while (list.length && (!limit || stepsUp)) {
-              list = pick.call(list).children();
-              --stepsUp;
-            }
-
-            var exit = true;
-            neighbor = list.parent;
-            break;
-          }
-          else {
-            list = list.parent.collection;
-            ++stepsUp;
-          }
-        }
-      }
-
-      if (typeof newPosition === 'number' || exit) {
-        return {position: newPosition, list: list, neighbor: neighbor};
-      } else {
-        return undefined;
-      }
+      return {position: newPosition, list: list, neighbor: neighbor};
     },
 
     above: function() {
@@ -229,6 +208,7 @@
       if (this.children().length > 0) {
         return this.children().first();
       }
+
       else {
         var ancestor = this._walkUpUntil(function(item) {
           return !!item.tailSibling();
@@ -242,6 +222,7 @@
           list = this.children();
 
       while (list && (maxSteps === undefined || maxSteps)) {
+        if (maxSteps) --maxSteps;
 
         if (step.call(list)) {
           item = step.call(list);
@@ -255,11 +236,15 @@
     },
 
     _walkUpUntil: function(condition) {
-      if (condition(this)) return this;
-
-      if (!this.collection.parent) return null;
-
-      return this.collection.parent._walkUpUntil(condition);
+      if (condition(this)) {
+        return this;
+      }
+      else if (!this.collection.parent) {
+        return null;
+      }
+      else {
+        return this.collection.parent._walkUpUntil(condition);
+      }
     }
   });
 })(Workflowy);

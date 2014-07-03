@@ -90,10 +90,10 @@
         else if (!this.model.title()) {
           event.preventDefault();
 
-          var next = this.model.leadSibling() || this.model.collection.parent;
+          var itemAbove = this.model.above();
           this.model.destroy();
-          if (next) {
-            next.view.focus();
+          if (itemAbove) {
+            itemAbove.view.focus();
           }
         }
 
@@ -143,40 +143,59 @@
 
     shortcutMoveUp: function(event) {
       event.preventDefault();
+      var list, newPosition;
 
       var neighbor = this.model.nearestNeighbor({
         traverse: this.model.leadSibling,
         pick: this.model.collection.last
       });
 
-      if (neighbor) {
-        var newPosition = neighbor.position;
-        if (newPosition === undefined) newPosition = neighbor.list.last();
-
-        this.retainFocus(function() {
-          this.model.collection.remove(this.model);
-          neighbor.list.insertAt(this.model, newPosition);
-        });
+      if (this.model.index() > 0) {
+        list = this.model.collection;
+        newPosition = this.model.index() - 1;
       }
+
+      else if (neighbor) {
+        list = neighbor.collection;
+        newPosition = neighbor.index() + 1;
+      }
+
+      else {
+        return;
+      }
+
+      this.retainFocus(function() {
+        this.model.collection.remove(this.model);
+        list.insertAt(this.model, newPosition);
+      });
     },
 
     shortcutMoveDown: function(event) {
       event.preventDefault();
+      var list, newPosition;
 
       var neighbor = this.model.nearestNeighbor({
         traverse: this.model.tailSibling,
         pick: this.model.collection.first
       });
 
-      if (neighbor) {
-        var newPosition = neighbor.position;
-        if (newPosition === undefined) newPosition = neighbor.list.first();
-
-        this.retainFocus(function() {
-          this.model.collection.remove(this.model);
-          neighbor.list.insertAt(this.model, newPosition);
-        });
+      if (this.model.index() < this.model.collection.length - 1) {
+        list = this.model.collection;
+        newPosition = this.model.index() + 1;
       }
+
+      else if (neighbor) {
+        newPosition = neighbor.index();
+      }
+
+      else {
+        return;
+      }
+
+      this.retainFocus(function() {
+        this.model.collection.remove(this.model);
+        list.insertAt(this.model, newPosition);
+      });
     },
 
     shortcutFocusUp: function(event) {
