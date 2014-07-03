@@ -11,7 +11,8 @@
       'blur .notes': 'collapseNotes',
       'input .notes': 'changeNotes',
       'focus p': 'activateShortcuts',
-      'blur p': 'disableShortcuts'
+      'blur p': 'disableShortcuts',
+      'moved': 'itemMoved'
     },
 
     toggleCollapsed: function() {
@@ -213,19 +214,36 @@
     },
 
     setDragopolis: function() {
+      var view = this;
+
       this.$el.droppable({
         hoverClass: 'draggable-hover',
-        greedy: true
+        greedy: true,
+
+        drop: function(event, ui) {
+          ui.draggable.trigger('moved', {parent: view.model});
+        }
       });
 
       this.$el.draggable({
         handle: '.bullet',
         helper: function() {
-          return this.$el.children('.bullet');
-        }.bind(this),
+          return view.$el.children('.bullet');
+        },
+        tolerance: 'pointer',
 
         cursorAt: {top: 10, left: 10}
       });
+    },
+
+    itemMoved: function(event, data) {
+      event.stopPropagation();
+      var parent = data.parent;
+
+      this.model.collection.remove(this.model);
+      parent.children().insertAt(this.model, 0);
+      this.render();
+      this.focus();
     }
   });
 })(Workflowy);
