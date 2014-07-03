@@ -89,8 +89,15 @@
       var range = window.getSelection().getRangeAt(0);
 
       selection.edited = this.isBeingEdited('title') ? '.title' : '.notes';
+
       selection.startOffset = range.startOffset;
       selection.endOffset = range.endOffset;
+      // if the character was a return and the browser inserted an element
+      // just set the selection to be after the linebreak instead
+      var notes = this.$el.children('.notes')[0];
+      if (notes.firstChild !== notes.lastChild) {
+        selection.endOffset = selection.startOffset = notes.firstChild.textContent.length + 1;
+      }
 
       return selection;
     },
@@ -103,6 +110,7 @@
       if (!textNode) {
         return;
       }
+
       var range = document.createRange();
       range.setStart(textNode, selection.startOffset);
       range.setEnd(textNode, selection.endOffset);

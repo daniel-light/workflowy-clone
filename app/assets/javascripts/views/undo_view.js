@@ -31,7 +31,7 @@
       if (this._undos.length === 0) return;
       event.preventDefault();
 
-      action = this._undos.pop();
+      var action = this._undos.pop();
       action.undo();
       this._redos.push(action);
 
@@ -47,7 +47,7 @@
       if (this._undos.length === 0) return;
       event.preventDefault();
 
-      action = this._redos.pop();
+      var action = this._redos.pop();
       action.redo();
       this.pushUndo(action);
 

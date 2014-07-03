@@ -58,7 +58,7 @@
 
     changeNotes: function(event) {
       event.stopPropagation();
-      this.model.notes(event.currentTarget.innerText); //TODO firefox support
+      this.model.notes(event.currentTarget.innerText);
     }
   });
 })(Workflowy);

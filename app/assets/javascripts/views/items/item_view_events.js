@@ -27,7 +27,7 @@
 
     changeNotes: function(event) {
       event.stopPropagation();
-      this.model.notes(event.currentTarget.innerText); //TODO firefox support
+      this.model.notes(event.currentTarget.innerText);
     },
 
     expandNotes: function(event) {
@@ -200,6 +200,7 @@
     },
 
     shortcutFocusUp: function(event) {
+      if (this.isBeingEdited('notes')) return;
       event.preventDefault();
 
       var itemAbove = this.model.above();
@@ -207,6 +208,7 @@
     },
 
     shortcutFocusDown: function(event) {
+      if (this.isBeingEdited('notes')) return;
       event.preventDefault();
 
       var itemBelow = this.model.below();
