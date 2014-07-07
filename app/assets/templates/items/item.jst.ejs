@@ -1,5 +1,7 @@
 <a class="collapser <%= item.get('collapsed') ? 'collapsed' : 'expanded' %>">
-
+  <% if (item.children().length > 0) { %>
+    <%= item.get('collapsed') ? '+' : '-' %>
+  <% } %>
 </a>
 <a class="bullet" href="#<%= item.get('uuid') %>">
   <div></div>
