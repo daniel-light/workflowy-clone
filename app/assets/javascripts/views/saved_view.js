@@ -7,7 +7,11 @@
     initialize: function() {
       this.$el.addClass('saved');
       this.unsavedItems = new Workflowy.Collections.Items();
-      this.listenTo(this.collection, 'change', this.modelChanged);
+
+      this.listenTo(this.collection,
+        'change:title change:notes change:parent change:rank',
+        this.modelChanged
+      );
       this.listenTo(this.collection, 'sync', this.modelSynced);
     },
 
