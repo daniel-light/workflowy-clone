@@ -42,6 +42,8 @@
           response.children,
           {parse: true}
         );
+
+        delete response.children;
       }
 
       return response.item;

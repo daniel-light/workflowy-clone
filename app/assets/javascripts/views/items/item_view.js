@@ -20,7 +20,7 @@
       this.bindShortcuts();
       this.listenTo(this.model, 'change', this.render);
       this.listenTo(this.model, 'destroy', this.remove);
-      this.setDragopolis();
+      this.setDragoppable();
     },
 
     render: function() {

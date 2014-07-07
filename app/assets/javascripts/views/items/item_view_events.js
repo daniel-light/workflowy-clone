@@ -215,7 +215,7 @@
       if (itemBelow) itemBelow.view.focus();
     },
 
-    setDragopolis: function() {
+    setDragoppable: function() {
       var view = this;
 
       this.$el.droppable({
