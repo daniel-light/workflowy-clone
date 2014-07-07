@@ -2,6 +2,12 @@
   height: 30px;
 }
 
+.breadcrumbs {
+  padding-bottom: 3px;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 15px;
+}
+
 .padded {
   padding: 0px 20px;
 }
@@ -57,10 +63,10 @@
   }
 }
 
-article > .list > .item {
+header {
   > p.title {
-    white-space: pre-wrap;
-    font-size: 30px;
+    margin: 0;
+    font-size: 28px;
   }
 
   > p.notes {
@@ -71,7 +77,6 @@ article > .list > .item {
 }
 
 p.title {
-  white-space: pre-wrap;
   margin-left: 34px;
 }
 p.notes {

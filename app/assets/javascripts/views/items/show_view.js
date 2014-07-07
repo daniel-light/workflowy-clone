@@ -25,7 +25,7 @@
         breadcrumbs: this.breadcrumbs()
       });
 
-      this.$el.children('.padded').html(html);
+      this.$el.html(html);
       this.$el.find('article').html(this.sublist.render().$el);
 
       return this;
