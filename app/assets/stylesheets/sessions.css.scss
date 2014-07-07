@@ -1,3 +1,58 @@
 // Place all the styles related to the sessions controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+nav {
+  label, button {
+    background: transparent;
+    margin: 5px 5px 6px 5px;
+  }
+
+}
+
+input[type="text"], input[type="password"] {
+  background: white;
+  border: 1px solid black;
+  color: black;
+}
+
+.login {
+  display: block;
+  margin: auto;
+  margin-top: 100px;
+  background: #555;
+  width: 270px;
+  padding: 30px;
+  border-radius: 7px;
+
+  label, input, a, button {
+    display: block;
+  }
+
+  label, a, button {
+    color: white;
+  }
+
+  input[type="text"], input[type="password"] {
+    display: block;
+    padding: 5px;
+    font-size: 20px;
+    width: 258px;
+    margin: 10px 0;
+  }
+
+  button, a {
+    text-align: center;
+    border: 2px solid black;
+    background: #334;
+    padding: 5px;
+    font-size: 20px;
+    width: 258px;
+    margin-top: 25px;
+    border-radius: 2px;
+
+    &:hover {
+      background-color: #445;
+    }
+  }
+}

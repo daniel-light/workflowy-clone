@@ -23,7 +23,9 @@ ul {
 }
 
 button,
-input[type="submit"] {
+input[type="submit"],
+input[type="text"],
+input[type="password"] {
  display: inline;
  -webkit-appearance: none;
  box-sizing: content-box;
@@ -36,5 +38,9 @@ input[type="submit"] {
  vertical-align: baseline;
  background: transparent;
  color: inherit;
- cursor: pointer;
+}
+
+input[type="submit"],
+button {
+  cursor: pointer;
 }

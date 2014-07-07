@@ -1,4 +1,6 @@
-<% unless signed_in? %>
-  <%= render 'users/form' %>
-<% end %>
-<%= link_to 'sign in with google', '/auth/google_oauth2' %>
+<div class="login">
+  <% unless signed_in? %>
+    <%= render 'users/form' %>
+  <% end %>
+  <%= link_to 'sign in with google', '/auth/google_oauth2' %>
+</div>
