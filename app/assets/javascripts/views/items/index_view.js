@@ -6,14 +6,15 @@
     template: JST['items/index'],
 
     initialize: function() {
-      this.sublist = new Workflowy.Views.List({collection: this.collection});
+      this.$el.addClass('page')
 
+      this.sublist = new Workflowy.Views.List({collection: this.collection});
       this.listenTo(this.collection, 'add remove sort', this.render);
     },
 
     render: function() {
       this.$el.html(this.template({items: this.collection}))
-      this.$el.append(this.sublist.render().$el)
+      this.$el.children('.padded').append(this.sublist.render().$el)
       return this;
     },
 

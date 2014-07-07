@@ -5,6 +5,8 @@
     template: JST['items/show'],
 
     initialize: function() {
+      this.$el.addClass('page');
+
       this.sublist = new Workflowy.Views.List({
         collection: this.model.children()
       });
@@ -23,7 +25,7 @@
         breadcrumbs: this.breadcrumbs()
       });
 
-      this.$el.html(html);
+      this.$el.children('.padded').html(html);
       this.$el.find('article').html(this.sublist.render().$el);
 
       return this;
