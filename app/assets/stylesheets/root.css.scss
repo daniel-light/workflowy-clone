@@ -2,11 +2,17 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+body {
+  background: #efefef;
+}
+
 .page {
+  background: white;
   width: 800px;
   min-height: 1000px;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 8px;
   margin: 30px auto;
+  box-shadow: 0 0 16px #ccc;
 }
