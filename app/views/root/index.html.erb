@@ -3,3 +3,9 @@
 <script type="application/json" id="bootstrapped_items_json">
   { "items": <%=  @nested_items.to_json.html_safe %> }
 </script>
+
+<script>
+  $(document).ready(function(){
+    Workflowy.initialize();
+  });
+</script>

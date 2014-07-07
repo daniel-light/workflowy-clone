@@ -37,8 +37,4 @@
       return uuid;
     }
   };
-
-  $(document).ready(function(){
-    Workflowy.initialize();
-  });
 })()
