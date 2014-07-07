@@ -5,6 +5,8 @@
     tag: 'li',
 
     initialize: function() {
+      this.$el.addClass('undos');
+
       this._undos = [];
       key('ctrl + z', 'all', this.undo.bind(this));
       this._redos = [];
@@ -18,7 +20,10 @@
     },
 
     render: function() {
-      this.$el.html('<a class="undo">undo</a><a class="redo">redo</a>')
+      this.$el.html(
+        '<li class="undo"><a>undo</a></li>' +
+        '<li class="redo"><a>redo</a></li>'
+      )
       return this;
     },
 

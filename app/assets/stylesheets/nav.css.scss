@@ -9,9 +9,18 @@ section.header-nav {
 
   a {
     color: white;
+    cursor: pointer;
     :visited {
       color: white;
     }
+    &:hover {
+        background-color: #666;
+    }
+  }
+
+  a, .nav-text {
+    display: block;
+    padding: 5px 5px 6px 5px;
   }
 
   nav {
@@ -26,14 +35,11 @@ section.header-nav {
     li {
       float: left;
       background-color: #555;
-      &:hover {
-        background-color: #666;
-      }
     }
 
     > ul {
       border-right: 1px solid black;
-      > li {
+      > li, div > li {
         border-left: 1px solid black;
       }
     } ul {
@@ -91,4 +97,8 @@ section.header-nav {
       }
     }
   }
+}
+
+.undos {
+  float: left;
 }

@@ -15,7 +15,7 @@
       if (this.unsavedItems.length > 0) {
         this.$el.html('<a>Save now</a>');
       } else {
-        this.$el.html('saved');
+        this.$el.html('<span class="nav-text">saved</span>');
       }
       return this;
     },
