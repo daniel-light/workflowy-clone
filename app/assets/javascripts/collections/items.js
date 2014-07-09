@@ -6,7 +6,7 @@
       if (this.parent) {
         return '/items/' + this.parent.get('uuid');
       } else {
-        return '/items'
+        return '/items';
       }
     },
 
@@ -30,7 +30,7 @@
         this._rerank(function() {
           item.save({}, {
             success: function(item, attributes) {
-              item.set(attributes, {parse: true})
+              item.set(attributes, {parse: true});
             }
           });
         }.bind(this));
@@ -42,9 +42,9 @@
         this.add(item);
         item.save({}, {
           success: function(item, attributes) {
-            item.set(attributes, {parse: true})
+            item.set(attributes, {parse: true});
           },
-          error: function() { console.log(arguments) }
+          error: function() { console.log(arguments); }
         });
       }
     },
@@ -87,7 +87,7 @@
       }
 
       if (newRank === lowRank || newRank === highRank) {
-        newRank += .5;
+        newRank += 0.5;
       }
 
       return newRank;

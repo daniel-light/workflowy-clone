@@ -100,7 +100,7 @@
 
     toggleCollapsed: function() {
       if (this.children().isEmpty()) return;
-      this.set('collapsed', !this.get('collapsed'))
+      this.set('collapsed', !this.get('collapsed'));
 
       $.ajax({
         url: this.url() + '/collapse',
@@ -192,8 +192,6 @@
       }
       var newAncestor = traverse.call(ancestor);
       return newAncestor._leaf(pick, stepsUp);
-
-      return {position: newPosition, list: list, neighbor: neighbor};
     },
 
     above: function() {

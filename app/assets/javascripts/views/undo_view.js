@@ -23,7 +23,7 @@
       this.$el.html(
         '<li class="undo"><a>undo</a></li>' +
         '<li class="redo"><a>redo</a></li>'
-      )
+      );
       return this;
     },
 
@@ -41,7 +41,7 @@
       this._redos.push(action);
 
       if (this._redos.length === 1) {
-        this.$el.children('.redo').addClass('usable')
+        this.$el.children('.redo').addClass('usable');
       }
       if (this._undos.length === 0) {
         this.$el.children('.undo').removeClass('usable');
