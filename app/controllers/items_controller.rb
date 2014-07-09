@@ -28,19 +28,10 @@ class ItemsController < ApplicationController
     @new_item = (@item ? @item.children : current_user.items).new(item_params)
     @new_item.rank ||= max_rank(nested_children(@item)) + 100
 
-    if request.xhr?
-      if @new_item.save
-        render json: @new_item
-      else
-        render status: 400, json: @new_item.errors
-      end
+    if @new_item.save
+      render json: @new_item
     else
-      if @new_item.save
-        redirect_to @item ? item_url(@item) : items_url
-      else
-        flash.now[:alert] = @new_item.errors.full_messages
-        render @item ? :show : :index
-      end
+      render status: 400, json: @new_item.errors
     end
   end
 
@@ -49,13 +40,7 @@ class ItemsController < ApplicationController
     view ||= @item.views.new(user_id: current_user.id)
     view.toggle_collapsed!
 
-    if request.xhr?
-      render json: {collapsed: view.collapsed}
-    elsif params[:return_id] && !params[:return_id].empty?
-      redirect_to item_url(params[:return_id])
-    else
-      redirect_to items_url
-    end
+    render json: {collapsed: view.collapsed}
   end
 
   def update
@@ -65,14 +50,9 @@ class ItemsController < ApplicationController
     end
 
     if @item.update(item_params)
-      request.xhr? ? (render json: @item) : (redirect_to item_url(@item))
+      render json: @item
     else
-      flash.now[:alert] = @item.errors.full_messages
-      if request.xhr?
-        render status: 400, json: @item.errors
-      else
-        render :edit
-      end
+      render status: 400, json: @item.errors
     end
   end
 
