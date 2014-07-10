@@ -2,5 +2,23 @@
   <% unless signed_in? %>
     <%= render 'users/form' %>
   <% end %>
-  <%= link_to 'sign in with google', '/auth/google_oauth2' %>
+  <%= link_to 'sign In with Google', '/auth/google_oauth2' %>
+  <%= link_to 'Sign In as Demo User', '#', class: 'demo' %>
 </div>
+
+<script>
+  $('.demo').click(function(event) {
+    event.preventDefault();
+    $.ajax({
+      url: '/session',
+      type: 'post',
+      data: {user: {email: 'example@example.com', password: 'green1'}},
+      //contentType: 'application/json',
+      success: function() {
+        console.log('success');
+        window.location.href = '/';
+      },
+      error: function() { console.log(arguments) }
+    })
+  });
+</script>

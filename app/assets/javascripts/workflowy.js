@@ -15,8 +15,8 @@
       var savedView = new Workflowy.Views.Saved({collection: Workflowy.flatItems});
       $('.saved').replaceWith(savedView.render().$el);
 
-      var undoView = new Workflowy.Views.Undo({collection: Workflowy.flatItems});
-      $('.dos').replaceWith(undoView.render().$el);
+      // var undoView = new Workflowy.Views.Undo({collection: Workflowy.flatItems});
+      // $('.dos').replaceWith(undoView.render().$el);
 
       new Workflowy.Routers.Router({$rootEl: $('#content')});
       Backbone.history.start();
