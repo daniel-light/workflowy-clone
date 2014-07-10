@@ -47,7 +47,7 @@
 
     disableShortcuts: function(event) {
       event.stopPropagation();
-      key.setScope('all');
+      key.setScope('main');
     },
 
     bindShortcuts: function() {
@@ -82,38 +82,37 @@
     },
 
     shortcutBackspace: function(event) {
-      if (this.isBeingEdited('title') && this.getSelection().startOffset === 0) {
+      if (this.isDeletable()) {
+        event.preventDefault();
 
-        if (this.model.children().length > 0) {
-          return;
-        }
-
-        else if (!this.model.title()) {
-          event.preventDefault();
-
-          var itemAbove = this.model.above();
-          this.model.destroy();
-          if (itemAbove) {
-            itemAbove.view.focus();
-          }
-        }
-
-        else if (this.model.leadSibling()) {
-          var leadSibling = this.model.leadSibling();
-
-          leadSibling.save({
+        if (this.model.leadSibling()) {
+          var nextFocus = this.model.leadSibling();
+          this.model.leadSibling().save({
             title: this.model.leadSibling().title() + this.model.title()
           });
-          event.preventDefault();
-          this.model.destroy();
-          leadSibling.view.focus();
         }
+
+        else {
+          var nextFocus = this.model.above();
+        }
+
+        this.model.destroy();
+        if (nextFocus) nextFocus.view.focus();
       }
 
       else if (this.isBeingEdited('notes') && this.model.notes() === '') {
         event.preventDefault();
         this.focus('title');
       }
+    },
+
+    isDeletable: function() {
+      return (
+        this.isBeingEdited('title') &&
+        this.model.children().length === 0 &&
+        this.getSelection().startOffset === 0 &&
+        (!this.model.title() || this.model.leadSibling())
+      );
     },
 
     shortcutSwapField: function(event) {
