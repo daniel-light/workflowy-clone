@@ -14,7 +14,7 @@ RSpec.describe Item, :type => :model do
     it do
       create(:item)
 
-      should validate_uniqueness_of(:rank).scoped_to(:parent_id)
+      should validate_uniqueness_of(:rank).scoped_to([:user_id, :parent_id])
     end
 
     it 'can have the same rank as another item with a different parent' do
