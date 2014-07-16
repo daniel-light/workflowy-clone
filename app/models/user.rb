@@ -16,6 +16,8 @@ class User < ActiveRecord::Base
     views.create!
   end
 
+  include SeedDemoItems
+
   def self.find_by_credentials(email, password)
     user = find_by(email: email)
 
