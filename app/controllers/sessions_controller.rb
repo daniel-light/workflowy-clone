@@ -29,6 +29,16 @@ class SessionsController < ApplicationController
     redirect_to root_url
   end
 
+  def demo
+    demo_user = User.create!(
+      email: SecureRandom.uuid + '@example.com',
+      password: 'green1'
+    )
+
+    sign_in!(demo_user)
+    redirect_to root_url
+  end
+
   private
 
   def user_params

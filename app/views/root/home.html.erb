@@ -10,10 +10,9 @@
   $('.demo').click(function(event) {
     event.preventDefault();
     $.ajax({
-      url: '/session',
+      url: '/session/demo',
       type: 'post',
-      data: {user: {email: 'example@example.com', password: 'green1'}},
-      //contentType: 'application/json',
+
       success: function() {
         console.log('success');
         window.location.href = '/';
