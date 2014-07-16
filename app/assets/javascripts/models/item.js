@@ -84,7 +84,7 @@
       var notes = this.escape('notes') || '';
       var lines = notes.split(/\r?\n/, 1);
 
-      if (lines.length < notes.length) {
+      if (lines[0].length < notes.length) {
         return lines[0] + '...';
       } else {
         return lines[0];
