@@ -33,8 +33,8 @@
       this.$el.html(this.template({item: this.model}));
 
       if (!this.model.get('collapsed')) {
-        var list_section = this.$el.children('section.indented');
-        list_section.html(this.sublist.render().$el);
+        var listSection = this.$el.children('section.indented');
+        listSection.html(this.sublist.render().$el);
       }
 
       if (selection) {
@@ -80,7 +80,7 @@
         edited: '.' + field,
         startOffset: offset,
         endOffset: offset
-      }
+      };
 
       this.restoreSelection(selection);
     },
@@ -97,7 +97,8 @@
       // just set the selection to be after the linebreak instead
       var notes = this.$el.children('.notes')[0];
       if (notes.firstChild !== notes.lastChild) {
-        selection.endOffset = selection.startOffset = notes.firstChild.textContent.length + 1;
+        selection.startOffset = notes.firstChild.textContent.length + 1;
+        selection.endOffset = selection.startOffset;
       }
 
       return selection;

@@ -6,13 +6,20 @@
     Collections: {},
     Views: {},
     Routers: {},
-    initialize: function() {
-      Workflowy.flatItems = new Workflowy.Collections.Items([], {comparator: 'uuid'});
 
-      var items = JSON.parse($('#bootstrapped_items_json').html()).items;
+    initialize: function() {
+      Workflowy.flatItems = new Workflowy.Collections.Items(
+        [],
+        {comparator: 'uuid'}
+      );
+
+      var itemsJSON = $('#bootstrapped_items_json').html();
+      var items = JSON.parse(itemsJSON).items;
       Workflowy.items = new Workflowy.Collections.Items(items, {parse: true});
 
-      var savedView = new Workflowy.Views.Saved({collection: Workflowy.flatItems});
+      var savedView = new Workflowy.Views.Saved(
+        {collection: Workflowy.flatItems}
+      );
       $('.saved').replaceWith(savedView.render().$el);
 
       key('backspace', 'main', function(event) { event.preventDefault(); });

@@ -43,8 +43,7 @@
         item.save({}, {
           success: function(item, attributes) {
             item.set(attributes, {parse: true});
-          },
-          error: function() { console.log(arguments); }
+          }
         });
       }
     },
@@ -61,7 +60,7 @@
 
     _rankForPosition: function(position) {
       if (position < -1 || position > this.length) {
-        throw new UserException('invalid rank specified');
+        throw 'invalid rank specified';
       }
 
       if (position === -1) {

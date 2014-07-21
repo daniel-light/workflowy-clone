@@ -49,7 +49,7 @@
       return response.item;
     },
 
-    toJSON: function(options) {
+    toJSON: function() {
       return _.omit(this.attributes, 'collapsed');
     },
 
@@ -114,13 +114,12 @@
     },
 
     title: function(value) {
-      if (value !== undefined && value != this.get('title')) {
+      if (value === undefined) return this.get('title');
+
+      if (value !== this.get('title')) {
         this.save({title: value}, {
           patch: true,
           success: function() {
-          },
-          error: function() {
-            //TODO flash an error message
           }
         });
       }
@@ -128,13 +127,12 @@
     },
 
     notes: function(value) {
-      if (value !== undefined && value != this.get('notes')) {
+      if (value === undefined) return this.get('title');
+
+      if (value !== this.get('notes')) {
         this.save({notes: value}, {
           patch: true,
           success: function() {
-          },
-          error: function() {
-            //TODO flash an error message
           }
         });
       }
@@ -167,7 +165,7 @@
         !this.collection.parent ||
         !this.collection.parent.collection
       ) {
-          throw new UserException("Item cannot be outdented");
+          throw "Item cannot be outdented";
       }
 
       var position = this.collection.parent.index() + 1;
