@@ -1,7 +1,9 @@
 section.header-nav {
+  $nav-height: 29px;
+
   width: 100%;
   min-width: 800px;
-  height: 29px;
+  height: $nav-height;
   background: #333;
   background: -webkit-gradient( linear, left bottom, left top, color-stop(1, #444), color-stop(0, #333) );
   color: white;
@@ -13,14 +15,15 @@ section.header-nav {
     :visited {
       color: white;
     }
-    &:hover {
-        background-color: #666;
-    }
   }
 
   a, .nav-text {
     display: block;
-    padding: 5px 5px 6px 5px;
+  }
+
+  .nav-text {
+    line-height: $nav-height;
+    vertical-align: middle;
   }
 
   nav {
@@ -49,7 +52,7 @@ section.header-nav {
       li.user-dropdown {
         position: relative;
         width: 28px;
-        height: 29px;
+        height: $nav-height;
 
         > div {
           width: 0px;
@@ -71,7 +74,7 @@ section.header-nav {
             display: block;
           }
 
-          top: 29px;
+          top: $nav-height;
           right: 0;
           margin-right: -1px;
           position: absolute;
