@@ -25,7 +25,11 @@ RSpec.describe Item, :type => :model do
       expect(second_child).to be_valid
     end
 
-    it { should validate_uniqueness_of(:uuid) }
+    it do
+      create(:item)
+
+      should validate_uniqueness_of(:uuid)
+    end
     it { should ensure_length_of(:uuid).is_equal_to(36) }
 
     it 'should automatically set a blank uuid' do
